@@ -1,0 +1,329 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>蓝桥软件学院</title>
+<link rel="stylesheet" type="text/css" href="../../static/js/select_bag/jquery.searchableSelect.css">
+<link rel="stylesheet" type="text/css" href="../../static/font/iconfont.css">
+<link rel="stylesheet" type="text/css" href="../../static/css/basic.css">
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+	<div class="inner-hearder">
+    	<a class="logo" href="javascript:void(0)"><img src="../../static/images/logo.png" alt=""></a>
+        <div class="userInfo fr">
+            <a class="header-img" href="javascript:void(0)"><img src="../../static/images/img_head.jpg" alt=""></a>
+            <label class="pointer">
+                <a href="javascript:void(0);" id="goUserCenter">王雷艳</a>
+            </label>
+            <a href="javascript:void(0);" class="optHover"><i class="icon-tro Hui-iconfont">&#xe6d5;</i></a>
+            <div class="optionuserinfo" style="display: none;">
+                <a href="javascript:void(0);" id="showUserInfo">个人中心</a>
+                <a href="javascript:void(0);" id="updatePwd">账户管理</a>
+                <a href="javascript:void(0);">退出</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--头部结束-->
+<div class="clearfix">
+	<div class="nav-left">
+        <div class="nav-left-inner">
+            <div class="user-inf">
+                <div class="clearfix show">
+                    <div class="head-img"><img src="../../static/images/img_head.jpg"></div>
+                    <div class="nick-role">
+                        <label>王雷艳</label>
+                        <span>职业经纪人</span>
+                        <a class="set-btn" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+                    </div>
+                </div>
+                <a class="set-btn-icon hide" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+            </div>
+            <div class="nav-menu">
+                <dl>
+                    <dt>
+                        <a class="nav-line-row current" href="javascript:void(0);">
+                            <i class="icon i-school"></i><span class="nav-content">院校管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='001' data-href='stu_inquiry.html' href="javascript:void(0);">学员查询</a>
+                        <a id='002' data-href='stu_audit.html' href="javascript:void(0);">新生审核</a>
+                        <a id='003' data-href='stu_info_modify.html' href="javascript:void(0);">学员基本信息修改</a>
+                        <a id='004' data-href='stu_placement.html' href="javascript:void(0);"  class="last">学员分班</a>
+                    </dd>
+                </dl>
+                <dl class="current">
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-file"></i><span class="nav-content">意向学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub" style="display:inherit;">
+                        <a id='005' data-href='stu_inquiry.html' href="javascript:void(0);">班级查询统计</a>
+                        <a class="last current" id='006' data-href='stu_audit.html' href="javascript:void(0);">班级信息修改</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-info"></i><span class="nav-content">学员报名审核</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='007' data-href='stu_placement.html' href="javascript:void(0);">就业信息查询</a>
+                        <a class="last" id='008' data-href='stu_inquiry.html' href="javascript:void(0);">就业信息录入</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-house"></i><span class="nav-content">学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='009' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a class="last" id='010' data-href='stu_audit.html' href="javascript:void(0);">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-rent"></i><span class="nav-content">班级管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='011' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='012' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-account"></i><span class="nav-content">就业服务</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='013' data-href='stu_inquiry.html' href="javascript:void(0);">学员入职登记</a>
+                        <a id='014' data-href='stu_audit.html' href="javascript:void(0);" class="last">学员职业信息</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-book"></i><span class="nav-content">收费管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='015' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='016' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-store"></i><span class="nav-content">账户管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub accont-menu">
+                        <a id='017' data-href='stu_inquiry.html' href="javascript:void(0);">个人信息</a>
+                        <a id='018' data-href='stu_audit.html' href="javascript:void(0);">账号安全</a>
+                        <a id='019' data-href='stu_audit.html' href="javascript:void(0);" class="last">账号绑定</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="main-right">
+    	<div class="inner-box">
+        	<div class="content">
+            	<!--个人信息页面开始-->
+                <div class="user-info-basic">
+                    <div class="tit-h1-box">
+                        <h1 class="tit-first">
+                            <span>账户管理</span>
+                        </h1>
+                    </div>
+                    <div class="tit-h2 clearfix">
+                        <div class="tab-change-inner tab-accont-change fl">
+                            <a class="curr" href="javascript:void(0)">个人信息</a><a href="javascript:void(0)">账户安全</a><a href="javascript:void(0)">帐号绑定</a>
+                        </div>
+                    </div>
+                    <!--个人信息开始-->
+                    <div class="accont-tabbox clearfix info-mody-box mt30" style="display:block;">
+                        <div class="left-info-inner fl">
+                            <a id="uploadHead" class="editHeadImg" href="javascript:void(0);">
+                                <img id="photoImg" src="../../static/images/img_head.jpg" width="100%" class="default">
+                                <img id="uploadImg" src="../../static/images/uploader.png" width="100%" class="hover">
+                                <input type="file" id="headImgFile" name="photoImg" class="headImg_file valid">
+                            </a>
+                            <span class="mt30">用户id：15927639863</span>
+                            <p class="fs12 mt30"><span>老师</span><i class="vertical-line-user">|</i><span class="c-blue">招生老师</span></p>
+                        </div>
+                        <div class="right-info-inner fl">
+                            <h3 class="tit-h3-user mb20">基础信息</h3>
+                            <form>
+                                <div class="item mt30">
+                                    <div class="item_box">
+                                        <label class="accontlabel"><i class="must-input-icon">*</i><i class="label-text">昵称：</i></label>
+                                        <span class="justlook" id="spanNickName">曹招生生生生生</span>
+                                        <input type="text" class="editmodify" name="nickname" placeholder="请输入昵称">
+                                    </div>
+                                    <p class="item_tips"></p>
+                                </div>
+                                <div class="item mt15">
+                                    <div class="item_box editInfobox">
+                                        <label class="accontlabel"><i class="must-input-icon">*</i><i class="label-text">性别：</i></label>
+                                        <span class="justlook">男</span>
+                                        <span class="editmodify">
+                                            <input type="hidden" id="sexTemp" value="0">
+                                            <label class="sex-check-info"><input type="radio" name="sex" value="0"><i class="redio-nam">男</i></label>
+                                            <label class="sex-check-info"><input type="radio" name="sex" value="1"><i class="redio-nam">女</i></label>
+                                        </span>
+                                    </div>
+                                    <p class="item_tips"></p>
+                                </div>
+                                <div class="item mt15">
+                                         <input type="hidden" id="birthTemp" value="Tue Nov 08 00:00:00 CST 2016">
+                                        <div class="item_box">
+                                            <label class="accontlabel"><i class="must-input-icon">*</i><i class="label-text">生日：</i></label>
+                                            <span class="justlook" id="spanBirth" style="display: inline;">2016-11-08</span>
+                                            <input class="Wdate editmodify" type="text" name="birth" id="birth" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d',isShowClear:true})">
+                                        <p class="item_tips"></p>
+                                    </div>
+                                </div>
+                                <div class="item mt15">
+                                     <input type="hidden" id="provCodeTemp" value="292">
+                                     <input type="hidden" id="cityCodeTemp" value="">
+                                     <label class="accontlabel"><i class="must-input-icon">*</i><i class="label-text">地区：</i></label>
+                                     <span class="justlook">宁夏</span>
+                                     <span class="editmodify">
+                                         <span class="provicebox" style="width:150px;">
+                                             <span class="item_box">
+                                                 <select id="province" name="provCode" onchange="tm_change_province(this)" style="width: 147px;">
+                                                     <option value="">--请选择省份--</option>
+                                                     <option value="1">安徽</option>  
+                                                     <option value="19">北京</option>  
+                                                     <option value="38">重庆</option>  
+                                                     <option value="79">福建</option>  
+                                                     <option value="89">甘肃</option>  
+                                                     <option value="104">广东</option>  
+                                                     <option value="126">广西</option>  
+                                                     <option value="141">贵州</option>  
+                                                     <option value="151">海南</option>  
+                                                     <option value="155">河北</option>  
+                                                     <option value="167">黑龙江</option>  
+                                                     <option value="181">河南</option>  
+                                                     <option value="199">湖北</option>  
+                                                 </select>
+                                             </span>
+                                             <span class="item_tips"></span>
+                                         </span>
+                                         <span class="provicebox" style="width:160px;">
+                                             <span class="item_box">
+                                                 <select id="city" name="cityCode" style="width: 147px;">
+                                                    <option value="">--请选择市--</option>
+                                                    <option value="293">银川</option> 
+                                                    <option value="294">石嘴山</option> 
+                                                    <option value="295">吴忠</option> 
+                                                    <option value="296">固原</option> 
+                                                 </select>
+                                             </span>
+                                             <span class="item_tips"></span>
+                                         </span>
+                                     </span>
+                                </div>
+                                <div class="center mt30 editmodify">
+                                    <button type="submit" class="btn btn-blue save-info-basic">保存</button>
+                                    <button id="canceledit" type="button" class="btn btn-blue ml10">取消</button>
+                                </div>
+                            </form>
+                        </div>
+                        <button class="btn btn-wihte editor-btn">编辑</button>
+                    </div>
+                    <!--个人信息结束-->
+                    <!--账号安全开始-->
+                    <div class="accont-tabbox user-info-savety mt30">
+                        <ul class="user-safe-ulbox">
+                            <li>
+                                <span class="user-safe-tit">账户密码</span>
+                                <span class="user-safe-middle">
+                                    <i class="fs12 safe-middle-text">用于保护账号信息和登录安全</i>
+                                </span>
+                                <span class="user-safe-btnbox">
+                                    <button href="javascript:void(0)" class="btn btn-blue" onclick="AccSecurity.jumpUrl('/user/goUpdatePwd');">修改</button>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <span class="user-safe-tit">安全手机</span>
+                                <span class="user-safe-middle">
+                                    <i class="fs12 user-bind-accontnum">159****9863</i>
+                                    <i class="fs12 safe-middle-text">安全手机可用于登录，重置密码</i>
+                                </span>
+                                <span class="user-safe-btnbox">
+                                    <button href="javascript:void(0)" class="btn btn-blue" onclick="AccSecurity.jumpUrl('/user/toChooseType/0/0');">绑定</button>
+                                </span>
+                            </li>
+                            <li class="clearfix">
+                                <span class="user-safe-tit">安全邮箱</span>
+                                <span class="user-safe-middle">
+                                    <i class="fs12 user-bind-accontnum">as****df@163.com</i>
+                                    <i class="fs12 safe-middle-text">若该邮箱丢失或停用，建议立即修改</i>
+                                </span>
+                                <span class="user-safe-btnbox">
+                                    <button href="javascript:void(0)" class="btn btn-blue" onclick="AccSecurity.jumpUrl('/user/toChooseType/1/1');">修改</button>
+                                </span>
+                                
+                            </li>
+                        </ul>
+                    </div>
+                    <!--账号安全结束-->
+                    <!--账号绑定开始-->
+                    <div class="accont-tabbox user-info-bind mt30">
+                    	<ul class="user-bind-third">
+							<li>
+								<label class="label-bind-name"><i class="icon-bind icon-wx"></i><span class="bind-name-text">微信</span></label>
+								<div class="right-bind-align">
+                                    <span class="user-bd"><i class="icon-bd-status icon-nobd"></i>未绑定</span>
+                                    <button type="button" class="btn btn-blue">添加绑定</button>
+                                </div>
+							</li>
+							<li>
+								<label class="label-bind-name"><i class="icon-bind icon-qq"></i><span class="bind-name-text">腾讯QQ</span></label>
+								<div class="right-bind-align">
+                                    <span class="user-bd"><i class="icon-bd-status icon-hadbd"></i>已绑定</span>
+                                    <button type="button" class="btn btn-wihte">解除绑定</button>
+                                </div>
+							</li>
+						</ul>
+                    </div>
+                    <!--账号绑定结束-->
+                </div>
+                <!--个人信息页面结束-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../../static/js/jquery-1.9.1.min.js"></script>
+<script src="../../static/js/placeholder.js"></script>
+<script src="../../static/js/select_bag/jquery.searchableSelect.js"></script>
+<script src="../../static/js/layer/layer.js"></script>
+<script src="../../static/js/effect.js"></script>
+<script>
+$(".editor-btn").click(function(){
+	$(".justlook").hide();
+	$(".editor").hide();//隐藏编辑按钮
+	$(".editmodify").addClass("inh");
+});
+$("#canceledit").click(function(){
+	$(".justlook").show();
+	$(".editor").show();//显示编辑按钮
+	$(".editmodify").removeClass("inh");	
+	$(".item_tips").html("");
+});
+</script>
+</body>
+</html>

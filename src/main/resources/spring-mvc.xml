@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.2.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+         http://www.springframework.org/schema/tx 
+         http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+
+	<!--配置config属性文件位置 -->
+<!-- 	<context:property-placeholder location="classpath:config.properties" /> -->
+	
+	<bean id="propertyConfigurer" 
+      class="com.lanqiao.common.PropertyPlaceholderConfigurer_custom">
+        <property name="fileEncoding" value="UTF-8" />   
+     <property name="locations">   
+      <list>   
+        <value>classpath:/config_local.properties</value>   
+        <value>classpath:/config_test.properties</value>
+        <value>classpath:/config_trade.properties</value>       
+      </list>   
+    </property>   
+</bean>
+	<!-- 默认的注解映射的支持 -->
+	<mvc:annotation-driven />
+
+	<!-- 如果当前请求为“/”时，则转发到“/helloworld/index” -->
+	<mvc:view-controller path="/" view-name="forward:/login.jsp" />
+	<!-- 静态资源映射 -->
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<!-- 当上面要访问的静态资源不包括在上面的配置中时，则根据此配置来访问 -->
+	<mvc:default-servlet-handler />
+
+	<!-- 开启controller注解支持 -->
+	<!-- use-default-filters="false" 只扫描指定的注解 -->
+<!-- 	<context:component-scan base-package="com.lanqiao.controller" use-default-filters="false"> -->
+<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" /> -->
+<!-- 	</context:component-scan> -->
+
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="contentType" value="text/html" />
+<!-- 		<property name="prefix" value="/WEB-INF/view/" /> -->
+		<property name="suffix" value="" />
+	</bean>
+	
+	<!-- 上传文件拦截，设置最大上传文件大小   10M=10*1024*1024(B)=10485760 bytes -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="maxUploadSize" value="${web.maxUploadSize}" />  
+        <property name="defaultEncoding" value="${web.encoding}" />  
+    </bean>
+
+ 	<context:component-scan base-package="com.lanqiao.aop,com.lanqiao.service,com.lanqiao.controller" />
+	
+
+   <!--配置拦截器, 多个拦截器,顺序执行     -->
+    <mvc:interceptors>
+        <mvc:interceptor>  
+            <mvc:mapping path="/**" />
+            <bean class="com.lanqiao.interceptor.AuthInterceptor"></bean>  
+        </mvc:interceptor>
+     
+    </mvc:interceptors>
+
+</beans>

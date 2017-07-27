@@ -1,0 +1,378 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>蓝桥软件学院</title>
+<link rel="stylesheet" type="text/css" href="../../static/js/select_bag/jquery.searchableSelect.css">
+<link rel="stylesheet" type="text/css" href="../../static/js/search_input_bag/main.css">
+<link rel="stylesheet" type="text/css" href="../../static/font/iconfont.css">
+
+<link rel="stylesheet" href="../../static/js/slick/slick.grid.css" type="text/css"/>
+<!--<link rel="stylesheet" href="../../static/js/slick/examples.css" type="text/css"/> -->
+<link rel="stylesheet" type="text/css" href="../../static/css/mytable.css">
+
+<link rel="stylesheet" type="text/css" href="../../static/css/basic.css">
+
+</head>
+<body>
+<!--头部开始-->
+<div class="header">
+	<div class="inner-hearder">
+    	<a class="logo" href="javascript:void(0)"><img src="../../static/images/logo.png" alt=""></a>
+        <div class="userInfo fr">
+            <a class="header-img" href="javascript:void(0)"><img src="../../static/images/img_head.jpg" alt=""></a>
+            <label class="pointer">
+                <a href="javascript:void(0);" id="goUserCenter">王雷艳</a>
+            </label>
+            <a href="javascript:void(0);" class="optHover"><i class="icon-tro Hui-iconfont">&#xe6d5;</i></a>
+            <div class="optionuserinfo" style="display: none;">
+                <a href="javascript:void(0);" id="showUserInfo">个人中心</a>
+                <a href="javascript:void(0);" id="updatePwd">账户管理</a>
+                <a href="javascript:void(0);">退出</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--头部结束-->
+<div class="clearfix">
+	<!--左侧菜单部分开始-->
+	<div class="nav-left">
+        <div class="nav-left-inner">
+            <!--左侧头像部分开始-->
+			<div class="user-inf">
+                <div class="clearfix show">
+                    <div class="head-img"><img src="../../static/images/img_head.jpg"></div>
+                    <div class="nick-role">
+                        <label>王雷艳</label>
+                        <span>职业经纪人</span>
+                        <a class="set-btn" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+                    </div>
+                </div>
+                <a class="set-btn-icon hide" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+            </div>
+            <!--左侧头像部分结束-->
+			<!--左侧菜单下拉部分开始-->
+			<div class="nav-menu">
+                <dl>
+                    <dt>
+                        <a class="nav-line-row current" href="javascript:void(0);">
+                            <i class="icon i-school"></i><span class="nav-content">院校管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='001' data-href='stu_inquiry.html' href="javascript:void(0);">学员查询</a>
+                        <a id='002' data-href='stu_audit.html' href="javascript:void(0);">新生审核</a>
+                        <a id='003' data-href='stu_info_modify.html' href="javascript:void(0);">学员基本信息修改</a>
+                        <a id='004' data-href='stu_placement.html' href="javascript:void(0);"  class="last">学员分班</a>
+                    </dd>
+                </dl>
+                <dl class="current">
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-file"></i><span class="nav-content">意向学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub" style="display:inherit;">
+                        <a id='005' data-href='stu_inquiry.html' href="javascript:void(0);">班级查询统计</a>
+                        <a class="last current" id='006' data-href='stu_audit.html' href="javascript:void(0);">班级信息修改</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-info"></i><span class="nav-content">学员报名审核</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='007' data-href='stu_placement.html' href="javascript:void(0);">就业信息查询</a>
+                        <a class="last" id='008' data-href='stu_inquiry.html' href="javascript:void(0);">就业信息录入</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-house"></i><span class="nav-content">学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='009' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a class="last" id='010' data-href='stu_audit.html' href="javascript:void(0);">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-rent"></i><span class="nav-content">班级管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='011' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='012' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-account"></i><span class="nav-content">就业服务</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='013' data-href='stu_inquiry.html' href="javascript:void(0);">学员入职登记</a>
+                        <a id='014' data-href='stu_audit.html' href="javascript:void(0);" class="last">学员职业信息</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-book"></i><span class="nav-content">收费管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='015' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='016' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-store"></i><span class="nav-content">账户管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='017' data-href='stu_inquiry.html' href="javascript:void(0);">个人信息</a>
+                        <a id='018' data-href='stu_audit.html' href="javascript:void(0);">账号安全</a>
+                        <a id='019' data-href='stu_audit.html' href="javascript:void(0);" class="last">账号绑定</a>
+                    </dd>
+                </dl>
+            </div>
+			<!--左侧菜单下拉部分结束-->
+        </div>
+    </div>
+	<!--左侧菜单部分结束-->
+    <div class="main-right">
+    	<div class="inner-box">
+        	<div class="content">
+            	<!--右侧内容部分开始-->
+            	<div class="content-inner-part">
+                	<div class="inner-reletive">
+                    	<!--右侧标题部分开始-->
+						<div class="tit-h1-box">
+                            <h1 class="tit-first">
+                                <span>学员管理</span><i class="gt-icon">&gt;</i><span class="curr">学员维护</span>
+                            </h1>
+                        </div>
+						<!--右侧标题部分结束-->
+                        <!--右侧内容部分背景白色开始-->
+                        <div class="inner-white">
+                            <div class="tit-h2 clearfix">
+                                <div class="tab-change-inner fl">
+                                    <a class="curr" href="javascript:void(0)">我管理的</a><a href="javascript:void(0)">我关注的</a><a href="javascript:void(0)">全部</a>
+                                </div>
+                                <!--<div class="fr btn-box-right">
+                                	<button class="btn btn-green" onClick="addStuRegistration()"><i class="Hui-iconfont">&#xe600;</i><span class="ml10">新增意向学员</span></button>
+                                </div>-->
+                            </div>
+                            <div class="search-part-tall">
+                                <div class="query-opt-coopration clearfix">
+                                    <div class="query-box-parent">
+                                        <div class="query-box mt15" style="display:block;">
+                                            <span class="select-search-box yuanxiao">
+                                                <select class="scoolname">
+                                                    <option value="">所在院校</option>
+                                                    <option value="清华大学">清华大学</option>
+                                                    <option value="北京大学">清华大学</option>
+                                                    <option value="华中科技大学">华中科技大学</option>
+                                                    <option value="武汉大学">武汉大学</option>
+                                                </select>
+                                            </span>
+                                            <span class="select-search-box">
+                                                <select class="scoolname">
+                                                    <option value="">班级名称</option>
+                                                    <option value="蓝桥1班">蓝桥1班</option>
+                                                    <option value="蓝桥2班">蓝桥2班</option>
+                                                    <option value="蓝桥3班">蓝桥3班</option>
+                                                    <option value="蓝桥4班">蓝桥4班</option>
+                                                </select>
+                                            </span>
+                                            <span class="search-auto-input">
+                                                <div class="field">
+                                                    <input disableautocomplete autocomplete="off" type="text" name="nope" id="stuname" placeholder="学员姓名" maxlength="40" />
+                                                </div>
+                                            </span>
+                                            <span class="select-box">
+                                                <select class="select">
+                                                    <option>职业状态</option>
+                                                    <option>未就业</option>
+                                                    <option>已就业</option>
+                                                    <option>待就业</option>
+                                                </select>
+                                            </span>
+                                            <span class="select-box">
+                                                <select class="select">
+                                                    <option>就业方式</option>
+                                                    <option>全部</option>
+                                                    <option>自主就业</option>
+                                                    <option>推荐就业</option>
+                                                </select>
+                                            </span>
+                                            <button class="btn btn-blue search-btn"><i class="Hui-iconfont">&#xe709;</i><span class="ml10">查询</span></button>
+                                            
+                                            <button class="btn btn-gray much-more"><span class="mr10">更多筛选</span><i class="Hui-iconfont">&#xe6d5;</i></button>
+                                            <button class="btn btn-gray put-away"><span class="mr10">收起筛选</span><i class="Hui-iconfont">&#xe6d6;</i></button>
+                                        </div>
+                                        <div class="query-box">
+                                        	<span class="select-box">
+                                                <select class="select" id="fangtanSearch">
+                                                    <option value="0">请选择其它搜索项</option>
+                                                    <option value="1">区域总监</option>
+                                                    <option value="2">招生经理</option>
+                                                    <option value="3">课程顾问</option>
+                                                    <option value="4">就业开始时间</option>
+                                                    <option value="5">首次入职时间</option>
+                                                </select>
+                                            </span>
+                                            <span class="ser-out-span">
+                                            	<span class="select-search-box">
+                                                    <select class="scoolname">
+                                                        <option value="">区域总监</option>
+                                                        <option value="区域总监">区域总监</option>
+                                                        <option value="区域总监">区域总监</option>
+                                                        <option value="区域总监">区域总监</option>
+                                                        <option value="区域总监">区域总监</option>
+                                                    </select>
+                                                </span>
+                                            </span>
+                                            <span class="ser-out-span">
+                                            	<span class="select-search-box">
+                                                    <select class="scoolname">
+                                                        <option value="">招生经理</option>
+                                                        <option value="招生经理">招生经理</option>
+                                                        <option value="招生经理">招生经理</option>
+                                                        <option value="招生经理">招生经理</option>
+                                                        <option value="招生经理">招生经理</option>
+                                                    </select>
+                                                </span>
+                                            </span>
+                                            <span class="ser-out-span">
+                                            	<span class="select-search-box">
+                                                    <select class="scoolname">
+                                                        <option value="">课程顾问</option>
+                                                        <option value="课程顾问">课程顾问</option>
+                                                        <option value="课程顾问">课程顾问</option>
+                                                        <option value="课程顾问">课程顾问</option>
+                                                        <option value="课程顾问">课程顾问</option>
+                                                    </select>
+                                                </span>
+                                            </span>
+                                            <!--<span class="ser-out-span">
+                                                <span class="search-auto-input">
+                                                    <div class="field">
+                                                        <input disableautocomplete autocomplete="off" type="text" name="nope" id="stuprofession" placeholder="学员姓名" maxlength="40" />
+                                                    </div>
+                                                </span>
+                                                <span class="select-search-box">
+                                                    <select class="scoolname">
+                                                        <option value="">学员姓名</option>
+                                                        <option value="学员姓名">学员姓名</option>
+                                                        <option value="学员姓名">学员姓名</option>
+                                                        <option value="学员姓名">学员姓名</option>
+                                                        <option value="学员姓名">学员姓名</option>
+                                                    </select>
+                                                </span>
+                                            </span>-->
+                                            <span class="ser-out-span">
+                                            	<span>从</span>
+                                                <input type="text" readonly disableautocomplete autocomplete="off">
+                                                <span>到</span>
+                                                <input type="text" readonly disableautocomplete autocomplete="off">
+                                            </span>
+                                            <span class="ser-out-span">
+                                            	<span>从</span>
+                                                <input type="text" readonly disableautocomplete autocomplete="off">
+                                                <span>到</span>
+                                                <input type="text" readonly disableautocomplete autocomplete="off">
+                                            </span>
+                                            <!--<span class="search-auto-input">
+                                                <div class="field">
+                                                    <input disableautocomplete autocomplete="off" type="text" name="nope" id="stuprofession" placeholder="所在专业" maxlength="40" />
+                                                </div>
+                                            </span>
+                                            <span class="search-auto-input">
+                                                <div class="field">
+                                                    <input disableautocomplete autocomplete="off" type="text" name="nope" id="stucollege" placeholder="所在学院" maxlength="40" />
+                                                </div>
+                                            </span>-->
+                                            <button class="btn btn-blue search-btn"><i class="Hui-iconfont">&#xe709;</i><span class="ml10">查询</span></button>
+                                        </div>
+                                    </div>
+                                    <div class="opt-btn-box">
+                                        <i class="mr20">已选：0</i>
+                                        <a class="c-blue" href="javascript:void(0)" onClick="entryRegistration()">入职登记</a><span>|</span>
+                                        <a class="c-blue" href="javascript:void(0)" onClick="leaveRegistrationDio()">离职登记</a><span>|</span>
+                                        <a class="c-blue" href="javascript:void(0)">标记为我关注</a><span>|</span>
+                                        <a class="c-blue" href="javascript:void(0)">取消关注</a>
+                                    </div>
+                                </div>
+                                <div class="table-scroll-parent" id="myGrid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右侧内容部分结束-->
+            	<!--分页开始-->
+                <div class="pager-part clearfix">
+                	<div class="fl">学员总数：<em class="stu_total">62</em>人</div>
+                	<div class="pager fr">
+                        <span>每页显示<select class="select-pager"><option>20</option><option>50</option><option>100</option></select>条</span>
+                        <ul>
+                            <li><a class="current prev" href="javascript:void(0);"><span>«上一页</span></a></li>
+                            <li><a class="current" href="javascript:void(0);">1</a></li>
+                            <li><a href="javascript:void(0);">2</a></li>
+                            <li><a href="javascript:void(0);">3</a></li>
+                            <li><a href="javascript:void(0);">4</a></li>
+                            <li><span>...</span></li>
+                            <li><a href="javascript:void(0);">15</a></li>
+                            <li><a href="javascript:void(0);"><span>下一页»</span></a></li>
+                        </ul>	
+                    </div>
+                </div>
+                <!--分页结束-->
+            </div>
+        </div>
+    </div>
+</div>
+<div style="height:0; overflow:hidden;" id="dialogcontant"></div>
+<script src="../../static/js/jquery-1.9.1.min.js"></script>
+<script src="../../static/js/placeholder.js"></script>
+<script src="../../static/js/select_bag/jquery.searchableSelect.js"></script>
+<script src="../../static/js/effect.js"></script>
+<!--搜索框下拉自动填充js开始-->
+<script src="../../static/js/search_input_bag/jquery.autocompleter.js"></script>
+<script src="../../static/js/search_input_bag/main.js"></script>
+<!--搜索框下拉自动填充js结束-->
+<script src="../../static/js/layer/layer.js"></script>
+
+<!--表格js开始-->
+<script src="../../static/js/slick/jquery-ui.min.js"></script>
+<script src="../../static/js/slick/jquery.event.drag-2.2.js"></script>
+<script src="../../static/js/slick/slick.core.js"></script>
+<script src="../../static/js/slick/slick.checkboxselectcolumn.js"></script>
+<script src="../../static/js/slick/slick.cellrangedecorator.js"></script>
+<script src="../../static/js/slick/slick.cellrangeselector.js"></script>
+<script src="../../static/js/slick/slick.cellselectionmodel.js"></script>
+<script src="../../static/js/slick/slick.rowselectionmodel.js"></script>
+<script src="../../static/js/slick/slick.columnpicker.js"></script>
+<script src="../../static/js/slick/slick.formatters.js"></script>
+<script src="../../static/js/slick/slick.grid.js"></script>
+<script src="../../static/js/table.js"></script>
+<!--表格js结束-->
+
+<script> 
+$(function(){
+	loadPage('diolog_employment.html','dialogcontant');
+	$('.scoolname').searchableSelect();
+}); 
+</script>
+
+</body>
+</html>

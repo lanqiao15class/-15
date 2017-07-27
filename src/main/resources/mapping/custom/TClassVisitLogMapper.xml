@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.dao.TClassVisitLogMapper" >
+   <!--  获取指定班级的跟踪列表 -->
+  <select id="getClassVisitLogByClassId" parameterType="java.lang.Integer" resultType="java.util.Map">
+  		select tu.real_name,dep.depname,cv.visit_time,cv.visit_content
+		from t_class_visit_log cv
+		LEFT JOIN t_teacher te ON te.user_id=cv.creator_userid
+		LEFT JOIN sys_deparment dep ON te.dep_id=depid
+		LEFT JOIN t_user tu ON tu.user_id=te.user_id 
+		where classid=#{classId}
+		ORDER BY cv.visit_time DESC
+  </select>
+</mapper>

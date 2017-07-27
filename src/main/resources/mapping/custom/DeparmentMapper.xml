@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.SysDeparmentMapper">
+
+  <select id="selectByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    
+    select 
+    <include refid="Base_Column_List" />
+    from sys_deparment
+    where parentid = #{parentid,jdbcType=INTEGER}   and isvalid=1
+  </select>
+ <select id="getUserByDepartment" parameterType="map" resultType="java.util.Map">
+ 	 SELECT  tu.user_id, sd.depid,sd.depname ,tu.real_name,tu.login_email,tu.email,tu.qq,tu.sex ,tu.isvalid    from sys_deparment  sd RIGHT JOIN t_teacher   tt  ON tt.dep_id=sd.depid  LEFT JOIN  t_user  tu  ON tu.user_id=tt.user_id where  sd.depid in(#{ids})   ORDER BY  tu.isvalid  DESC    limit #{currpage},#{pageSize} 
+  </select>
+   <select id="getUserByDepartmentCount" parameterType="map" resultType="Integer">
+ 	 SELECT  count(tu.login_email)   from sys_deparment  sd RIGHT JOIN t_teacher   tt  ON tt.dep_id=sd.depid  LEFT JOIN  t_user  tu  ON tu.user_id=tt.user_id where  sd.depid in(#{ids})  
+  </select>
+  <select id="getUserByRole" parameterType="map" resultType="java.util.Map">
+ 	 SELECT  str.real_name, str.login_email,str.user_id,str.role_id, str.sex,str.isvalid ,tt.dep_id  from (select  tu.real_name, tu.login_email,tu.user_id,sur.role_id, tu.sex,tu.isvalid  from  sys_user_role sur,t_user  tu  where tu.user_id=sur.user_id  and  sur.role_id=#{roleId} ) str , t_teacher  tt  where   str.user_id=tt.user_id  ORDER BY  str.isvalid  DESC   limit #{currpage},#{pageSize}  
+  </select>
+   <select id="getUserByRoleCount" parameterType="map" resultType="Integer">
+ 	 SELECT COUNT(tt.dep_id ) from (select  tu.real_name, tu.email,tu.user_id,sur.role_id, tu.sex,tu.isvalid  from  sys_user_role sur,t_user  tu  where tu.user_id=sur.user_id  and  sur.role_id=#{roleId} ) str , t_teacher  tt  where   str.user_id=tt.user_id
+ 	   </select>
+ 	  
+ 	     
+ 	   
+</mapper>

@@ -1,0 +1,25 @@
+// ajax 调用规则定义了附加的参数
+1://notloading 来指定执行ajax 调用过程是否有加载层出现
+// 默认不加此参数,有加载效果. 不提示加载层指定notloading:true 	
+
+2: 参数 canback 
+  true: 支持回退
+  false : 不支持回退, 	
+  默认不指定此参数, 或false , 表示不支持回退. 
+  作用:  有些ajax 调用数据数据提交, 这是后退时不能再次调用此接口, 那么就可指定此参数
+  
+	$.ajax({
+		type:"post",
+		url:url,
+		data:{},
+		notloading:true,  // 是否显示加载层. 
+		canback:true, // 是否支持后退规则
+		dataType:"html",
+		success:function(data){
+			
+		}
+	});
+	
+	
+班级， 学生， 收入， 
+	

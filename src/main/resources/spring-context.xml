@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.2.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+         http://www.springframework.org/schema/tx 
+         http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+        
+<!-- 	<context:property-placeholder location="classpath:config.properties" /> -->
+<!-- 	根据环境的不同载入不同的配置文件.  -->
+<!-- 	需要在tomcat 启动时增加参数 -Dtomcatid -->
+<!-- 	tomcatid=1 为测试环境 -->
+<!-- 	tomcatid =2 为商用环境 -->
+<!-- 	如果没有这个参数, 默认为 tomcatid=0  , 本地开发环境 -->
+
+<bean id="propertyConfigurer" 
+      class="com.lanqiao.common.PropertyPlaceholderConfigurer_custom">
+        <property name="fileEncoding" value="UTF-8" />   
+     <property name="locations">   
+      <list>   
+        <value>classpath:/config_local.properties</value>   
+        <value>classpath:/config_test.properties</value>
+        <value>classpath:/config_trade.properties</value>       
+      </list>
+    </property>
+</bean>
+	
+	<!--自动注解配置 -->
+	<context:annotation-config />
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.lanqiao.controller,com.lanqiao.service,com.lanqiao.aop" />
+
+	<!-- Druid 数据源配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 配置过滤 -->
+		<property name="filters" value="${druid.filters}" />
+		<!-- 配置初始化大小 -->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<!-- 配置初始化最大 连接数 -->
+		<property name="maxActive" value="${druid.maxActive}" />
+		<!-- 配置初始化最小连接数 -->
+		<property name="minIdle" value="${druid.minIdle}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${druid.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+		<!-- 检测连接是否有效的SQL -->
+		<property name="validationQuery" value="${druid.validationQuery}" />
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+		<!-- MySQL不需要做PSCache,只有Oracle/DB2/SQL Server之类支持游标的数据库才需要配置成true -->
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+		<!-- 如果是Oracle/DB2/SQL Server之类支持游标的数据库需要加上一下配置 -->
+		<!-- <property name="maxPoolPreparedStatementPerConnectionSize" value="50"/> -->
+	</bean>
+
+	<!--事物管理操作 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<!-- 加入注解式事物配置管理 -->
+	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+	
+	<!-- aspectj注解支持，配置其使用cglib动态代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<!-- 申明式事物配置开始 -->
+	<!-- <tx:advice id="txAdvice" transaction-manager="txManager"> -->
+	<!-- <tx:attributes> -->
+	<!-- <tx:method name="get*" propagation="REQUIRED" read-only="true" /> -->
+	<!-- <tx:method name="save*" propagation="REQUIRED" rollback-for="java.sql.SQLException"/> -->
+	<!-- <tx:method name="update*" propagation="REQUIRED" /> -->
+	<!-- <tx:method name="delete*" propagation="REQUIRED" /> -->
+	<!-- <tx:method name="insert*" propagation="REQUIRED" /> -->
+	<!-- </tx:attributes> -->
+	<!-- </tx:advice> -->
+	<!-- 切片管理 -->
+	<!-- <aop:config> -->
+	<!-- <aop:pointcut expression="execution(* com.lanqiao.service.impl.*.*(..))" id="txPointcut"/> -->
+	<!-- <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/> -->
+	<!-- </aop:config> -->
+	<!-- 申明式事物配置结束 -->
+	
+	<!-- ======================发送邮件========================== -->
+	<bean id="freeMarker" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="freemarkerSettings"><!-- 设置FreeMarker环境属性 -->
+			<props>
+				<prop key="template_update_delay">1800</prop> <!--刷新模板的周期，单位为秒 -->
+				<prop key="default_encoding">UTF-8</prop>     <!--模板的编码格式 -->
+				<prop key="locale">zh_CN</prop> <!--本地化设置-->
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 注意:这里的参数(如用户名、密码)都是针对邮件发送者的 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		
+        <property name="javaMailProperties">  
+            <props>
+                <prop key="mail.smtp.auth">true</prop>  
+                <prop key="mail.smtp.timeout">25000</prop>  
+            </props>
+        </property>
+<!--           <property name="port">   -->
+<!--             <value>25</value>  -->
+<!--         </property>   -->
+        
+        <property name="host">  
+            <value>${mailSender.smtphost}</value>  
+        </property>  
+        <property name="username">  
+            <value>${mailSender.username}</value>
+        </property>
+        <property name="password">  
+            <value>${mailSender.password}</value> 
+        </property>
+        
+       
+	</bean>
+	
+	<bean id="emailService" class="com.lanqiao.service.EmailService">
+		<property name="mailSender" ref="mailSender"></property>
+		<property name="freeMarkerConfigurer" ref="freeMarker"></property>
+	</bean>
+
+<!-- 操作日志 -->
+<bean id="logservice" class="com.lanqiao.service.LogService"></bean>
+<bean id="SpringContextUtil" class="com.lanqiao.common.SpringContextUtil"></bean>
+	
+	
+<!-- 载入配置到 GlobalConstant -->
+<bean id="GlobalConfig" class="com.lanqiao.constant.GlobalConstant">
+	<property name="uploadPath" value="${img.uploadPath}" />
+	<property name="httpUploadURL" value="${HttpUploadURL}" />
+	<property name="defaultheadface" value="${defaultheadface}" />
+	
+	<property name="LoginURL" value="${LoginURL}" />
+	
+	<property name="GlobalWebURL" value="${GlobalWebURL}" />
+	<property name="LanqiaoZYXTURL" value="${LanqiaoZYXTURL}" />
+	
+	<property name="appid" value="${appid}" />
+	<property name="SSOURL" value="${SSOURL}" />
+	
+	<property name="weixin_appid" value="${weixin_appid}" />
+	<property name="weixin_secret" value="${weixin_secret}" />	
+</bean>
+
+
+
+<import resource="classpath:spring-redis.xml"/>
+</beans>

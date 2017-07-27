@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TStudentclassLogMapper">
+ 
+  <!--  获取指定学员的标记  -->
+  <select id="getClassLogByUserId" parameterType="java.lang.Integer" resultType="java.util.Map">
+  	 select lc.class_name,lc.course_type,lc.`status`,sc.create_time,sc.exit_time,sc.remark
+	 from t_studentclass_log sc
+	 LEFT JOIN t_lqclass lc ON lc.lq_class_id=sc.class_id
+	 where sc.user_id=#{stuNo}
+	 ORDER BY sc.create_time DESC
+  </select>
+  
+  <!-- 获取最近的一条记录 -->
+  <select id="getLastLogByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	SELECT 
+  		studentclass_log_id
+	 FROM 
+	 	t_studentclass_log 
+	 WHERE 
+	 	user_id=#{_parameter} 
+	 ORDER BY 
+	 	studentclass_log_id 
+	 DESC 
+	 LIMIT 1
+  
+  </select>
+  
+    
+</mapper>

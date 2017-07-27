@@ -1,0 +1,33 @@
+<script id="myTemplate" type="text/x-jsrender">
+
+<div>
+尊敬的用户：您好。<br/>
+		您的邮箱验证码为:{{:code}}<br/>
+		请您在注册页面输入该邮箱验证码，完成注册！<br/>
+		蓝桥欢迎您！<br/>
+
+</div>
+<table width="100%" border=1>
+<tr>
+<th>用户ID</th>
+<th>用户昵称</th>
+<th>邮箱</th>
+
+</tr>
+
+
+
+ {{for ulist}}  
+<tr>
+<td>{{:id}}</td>
+
+<td>{{:nickname}}</td>
+
+<td>{{:email}}</td>
+
+</tr>
+ {{/for}}
+
+
+</table>
+</script>

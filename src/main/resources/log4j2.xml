@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="warn">
+    <properties>
+        <!-- 输出文件的路径 -->
+        <property name="LOG_HOME">${sys:catalina.home}/logs/</property> 
+<!--         <property name="LOG_HOME">/var/log</property> -->
+    </properties>
+    <appenders>
+        <!-- 控制台日志输出 -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="%d %c-%m%n" />
+        </Console>
+        <!-- 记录日志文件 -->
+        <RollingFile name="DevLog" fileName="${LOG_HOME}/lqzp.log" filePattern="${LOG_HOME}/logs_%d{yyyy-MM-dd}_%i.log" append="true">
+            <PatternLayout pattern="%d %p %c %L %m%n" />
+            <Policies>
+                <!-- 每24小时更新一次 ,inteverval结合分割的精度使用yyyy-MM-dd则精度为天,yyyy-MM-dd-HH则精度为小时-->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+                <SizeBasedTriggeringPolicy size="5MB" />
+            </Policies>
+            <!-- 最多备份30个 -->
+            <DefaultRolloverStrategy max="30" />
+              <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+              </Filters>
+        </RollingFile>
+        
+         <RollingFile name="RollingFile1" fileName="${LOG_HOME}/lqzperror.log"
+                    filePattern="${LOG_HOME}/logs_%d{yyyy-MM-dd}_%i.log" append="true">
+            <PatternLayout pattern="%d %p %c %L %m%n" />
+            <Policies>
+                <!-- 每24小时更新一次 ,inteverval结合分割的精度使用yyyy-MM-dd则精度为天,yyyy-MM-dd-HH则精度为小时-->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+                <SizeBasedTriggeringPolicy size="5MB" />
+            </Policies>
+            <!-- 最多备份30个 -->
+            <DefaultRolloverStrategy max="30" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+              </Filters>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <!-- spring的相关日志 -->
+        <logger name="org.springframework.core" level="info"></logger>
+        <logger name="org.springframework.beans" level="info"></logger>
+        <logger name="org.springframework.context" level="info"></logger>
+        <logger name="org.springframework.web" level="info"></logger>
+
+        <!-- mybtis 和 sql 的相关日志 -->
+        <logger name="org.mybatis" level="debug"></logger>
+        <logger name="java.sql" level="debug" ></logger>
+        <logger name="com.lanqiao" level="debug" ></logger>
+
+    	<!-- Apache Loggers -->
+        <logger name="org.apache.shiro" level="info"/>
+            
+        <!-- Alibaba Loggers -->
+        <logger name="com.alibaba.druid" level="info"/>
+        
+        <root level="info">
+            <appender-ref ref="DevLog" />
+            <appender-ref ref="RollingFile1" />
+            <appender-ref ref="Console" />
+        </root>
+    </loggers>
+</configuration>

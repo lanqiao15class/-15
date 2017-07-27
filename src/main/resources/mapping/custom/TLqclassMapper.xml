@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TLqclassMapper">
+
+<!--   查询某一班级的学员列表 -->
+<select id="selectMemberInOneClass" parameterType="java.lang.Integer" resultType="map">
+select distinct b.user_id as userid, b.stu_no as stuNo,d.real_name as realName,b.course_type as courseid,c.univ_name as schoolName,
+ b.`status` as statusid,b.has_paid as haspaid, 
+b.is_avaiable as isavaiable,b.update_time as updateTime,b.lq_class_id as nowclassid, a.class_id  as classid ,count(DISTINCT e.nnid) as cot
+  from t_studentclass_log a 
+LEFT JOIN  t_student b on (a.user_id=b.user_id)
+LEFT JOIN  lq_universities c on(b.univ_code= c.univ_code)
+LEFT JOIN  t_user  d on (b.user_id = d.user_id)
+LEFT JOIN  t_visit_sub_log  e on (e.data_id=d.user_id)
+where a.class_id=#{classid}  GROUP BY b.user_id 
+order by b.update_time desc
+</select> 
+<select id="selectMemberInOneUser" parameterType="java.lang.Integer" resultType="map">
+
+select distinct a.user_id as userid, b.stu_no as stuNo,a.real_name as realName,c.univ_name as schoolName,b.lq_class_id
+  from  t_user a
+LEFT JOIN  t_student b on (a.user_id=b.user_id)
+LEFT JOIN  lq_universities c on(b.univ_code= c.univ_code)
+where a.user_id=#{userid} 
+</select>
+<select id="selectMemberInOneClass_count" parameterType="java.lang.Integer" resultType="int">
+ select count(*) as ccount
+ from t_studentclass_log a 
+ where a.class_id=#{classid}
+</select>
+
+<select id="selectCountInClass" parameterType="map" resultType="java.lang.Integer">
+	SELECT 
+		count(*)
+	FROM 
+		t_student WHERE `status` IN
+		<foreach collection="statuslist" index="item" item="item" open="(" separator="," close=")"> 
+        	#{item}
+   		</foreach> 
+   	 and lq_class_id=#{classid}
+   	</select>  	
+
+
+
+<!--  所有处于某一状态的学生列表. -->
+<select id="selectListInClass100Worked" parameterType="map" resultMap="com.lanqiao.dao.StudentMapper.BaseResultMap">
+	SELECT 
+		*
+	FROM 
+		t_student WHERE
+		  lq_class_id=#{classid}
+		  and `status`  IN
+		<foreach collection="statuslist" index="item" item="item" open="(" separator="," close=")"> 
+        	#{item}
+   		</foreach> 
+   	
+   	</select>  	
+   	
+   		
+	
+<!--   最后一次班级状态变化的记录 -->
+<select id="selectLastChangenlog" parameterType="java.lang.Integer" resultMap="com.lanqiao.dao.TClassStatusLogMapper.BaseResultMap">
+select  * from t_class_status_log 
+	where class_id=#{classid}
+	order by inputtime desc 
+limit 1
+</select>
+
+
+<!--  查询在某一班级的学生,并且处于某一状态 -->
+<select id="selectUseridInClass" parameterType="map" resultType="java.lang.Integer">
+	select   user_id from t_student a 
+	where a.lq_class_id=#{classid} and a.`status`=#{status}
+</select>
+
+
+	<!-- 根据状态列表获取对应的班级 -->
+	<select id="classForStuIntoClass" parameterType="java.util.List" resultType="java.util.Map">
+	SELECT 
+		lq_class_id id,class_name label,course_type courseType
+	FROM 
+		t_lqclass WHERE `status` IN
+		<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+        	#{item}  
+   		</foreach> 
+   	ORDER BY update_time DESC
+	</select>  	
+  	
+  	<!-- 班级名称存在性验证 -->
+  	<select id="classNameUniqueCheck" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		SELECT 
+  			COUNT(1) 
+  		FROM 
+  			t_lqclass 
+  		WHERE 
+  			class_name=#{className} 
+  			<if test="classId != null and classId != ''">
+	  			AND lq_class_id != #{classId} 
+  			</if>
+  	</select>
+  	
+  	
+  	<!-- 添加班级，返回主键 zzx -->
+  	<insert id="insertSelectiveReturnId" parameterType="com.lanqiao.model.TLqclass">
+  	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="lqClassId"> 
+		SELECT LAST_INSERT_ID() 
+	</selectKey>
+    insert into t_lqclass
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="className != null">
+        class_name,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="expectStarttime != null">
+        expect_starttime,
+      </if>
+      <if test="monitorId != null">
+        monitor_id,
+      </if>
+      <if test="chrTeacherId != null">
+        chr_teacher_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="courseType != null">
+        course_type,
+      </if>
+      <if test="comTeacherId != null">
+        com_teacher_id,
+      </if>
+      <if test="cepTeacherId != null">
+        cep_teacher_id,
+      </if>
+      <if test="typePre != null">
+        type_pre,
+      </if>
+      <if test="graduateTime != null">
+        graduate_time,
+      </if>
+      <if test="expectGraduateTime != null">
+        expect_graduate_time,
+      </if>
+      <if test="qqGroup != null">
+        qq_group,
+      </if>
+      <if test="stuCount != null">
+        stu_count,
+      </if>
+      <if test="typeReal != null">
+        type_real,
+      </if>
+      <if test="invTeacherId != null">
+        inv_teacher_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="closeTime != null">
+        close_time,
+      </if>
+      <if test="classGoal != null">
+        class_goal,
+      </if>
+      <if test="expectSchoolEndtime != null">
+        expect_school_endtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="expectStarttime != null">
+        #{expectStarttime,jdbcType=DATE},
+      </if>
+      <if test="monitorId != null">
+        #{monitorId,jdbcType=INTEGER},
+      </if>
+      <if test="chrTeacherId != null">
+        #{chrTeacherId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="courseType != null">
+        #{courseType,jdbcType=INTEGER},
+      </if>
+      <if test="comTeacherId != null">
+        #{comTeacherId,jdbcType=INTEGER},
+      </if>
+      <if test="cepTeacherId != null">
+        #{cepTeacherId,jdbcType=INTEGER},
+      </if>
+      <if test="typePre != null">
+        #{typePre,jdbcType=CHAR},
+      </if>
+      <if test="graduateTime != null">
+        #{graduateTime,jdbcType=DATE},
+      </if>
+      <if test="expectGraduateTime != null">
+        #{expectGraduateTime,jdbcType=DATE},
+      </if>
+      <if test="qqGroup != null">
+        #{qqGroup,jdbcType=VARCHAR},
+      </if>
+<!--       <if test="brokersId != null"> -->
+<!--         #{brokersId,jdbcType=VARCHAR}, -->
+<!--       </if> -->
+      <if test="stuCount != null">
+        #{stuCount,jdbcType=INTEGER},
+      </if>
+      <if test="typeReal != null">
+        #{typeReal,jdbcType=CHAR},
+      </if>
+      <if test="invTeacherId != null">
+        #{invTeacherId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="classGoal != null">
+        #{classGoal,jdbcType=CHAR},
+      </if>
+      <if test="expectSchoolEndtime != null">
+        #{expectSchoolEndtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 班级可转班学员人数（未开课、在读、结业、求职中） -->	
+  <select id="studentCountCanMerge" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	SELECT COUNT(1) FROM t_student s WHERE s.lq_class_id=#{classId} AND s.`status` IN
+  	<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+      	#{item}  
+ 	</foreach> 
+  </select>
+  
+  <!-- 获取可转班的学员ids -->
+  <select id="getStuIdsCanMerge" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT user_id FROM t_student WHERE lq_class_id=#{classId} AND `status` IN
+  	<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+      	#{item}  
+ 	</foreach>
+  </select>	
+  
+  <!-- 获取被合班班级的信息 -->
+  <select id="getMergeClassData" parameterType="java.util.List" resultType="java.util.Map">
+  		SELECT 
+  			c.class_name className,
+			(SELECT d.label FROM sys_dict d WHERE d.type='lq_courseType' AND d.`value`=c.course_type) courseType,
+			c.lq_class_id classId,c.`status`
+		FROM 
+			t_lqclass c 
+		WHERE 
+			c.lq_class_id IN
+		<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+      		#{item}  
+ 		</foreach>
+  
+  </select>
+  	<!-- ==========查询班级列表开始================== -->
+  	<!-- ++++++++++++++baseSql开始++++++++++++++++ -->
+  	<sql id="classBaseSql">
+  		tl.lq_class_id as lqClassId,
+		tl.class_name as className,
+		sc.course_name  as courseType,
+		sc.total_class as totalClass,
+		tl.`status`,
+		tl.real_count as realCount,
+		tl.update_time as updateTime
+  	</sql>
+  	<sql id="myFocusClassBaseSql">
+  	 from t_lqclass tl
+  	 LEFT JOIN t_data_tag tg on tl.lq_class_id=tg.data_id
+     LEFT JOIN sys_course  sc on  sc.course_id=tl.course_type
+  	 where tg.tagtype=1 and tg.datatype=2 and tg.userid=#{teaUserId}
+  	</sql>
+  	<sql id="allClassBaseSql">
+  	  from t_lqclass tl
+  	  LEFT JOIN t_data_tag tg on (tl.lq_class_id=tg.data_id and tg.tagtype=1 and tg.datatype=2 and tg.userid=#{teaUserId})
+  	 LEFT JOIN sys_course  sc on  sc.course_id=tl.course_type
+  	  where 1=1
+  	</sql>
+
+
+  	<sql id="myManageClassBaseSql">
+  	from t_lqclass tl
+  	LEFT JOIN t_data_tag tg on (tl.lq_class_id=tg.data_id and tg.tagtype=1 and tg.datatype=2 and tg.userid=#{teaUserId})
+  	LEFT JOIN sys_course  sc on  sc.course_id=tl.course_type
+  	where (tl.chr_teacher_id=#{teaUserId} or tl.cep_teacher_id=#{teaUserId} or tl.com_teacher_id=#{teaUserId}) 
+  	</sql>
+
+
+  	<sql id="classBaseQuery">
+  	<if test="classStatus !=null">
+  	and tl.`status`=#{classStatus,jdbcType=INTEGER}
+  	</if>
+  	<if test="courseType !=null">
+  	and tl.course_type=#{courseType,jdbcType=INTEGER}
+  	</if>
+  	<if test="js_teacher_userid !=null">
+  	and tl.com_teacher_id=#{js_teacher_userid,jdbcType=INTEGER}
+  	</if>
+  	<if test="broker_teacher_userid !=null">
+  	and tl.chr_teacher_id=#{broker_teacher_userid,jdbcType=INTEGER}
+  	</if>
+  	<if test="cep_teacher_userid !=null">
+  	and tl.cep_teacher_id=#{cep_teacher_userid,jdbcType=INTEGER}
+  	</if>
+  	<if test="select_class_name !=null">
+  	and tl.class_name like concat('%',#{select_class_name,jdbcType=VARCHAR},'%')
+  	</if>
+  	</sql>
+
+
+  	<sql id="classBasePage">
+  	order by tl.`status`,tl.update_time desc
+  	limit #{currpage},#{pageSize}
+  	</sql>
+  	<!-- ++++++++++++++baseSql结束++++++++++++++++ -->
+  	<!-- ++++++++++++++我关注的班级列表相关开始++++++++++++++++ -->
+  	<!-- 我关注的班级列表 -->
+  	<select id="selectMyFocusClassList" parameterType="java.util.Map" resultType="java.util.Map">
+  	 select
+  	    <include refid="classBaseSql"></include>,tg.data_id as dataId
+       <include refid="myFocusClassBaseSql"></include>
+       <include refid="classBaseQuery"></include>
+       <include refid="classBasePage"></include>
+  	</select>
+  	<!-- 我关注的班级记录数 -->
+  	<select id="getMyFocusClassCount" parameterType="java.util.Map" resultType="Integer">
+  	 select
+  	    count(1)
+      <include refid="myFocusClassBaseSql"></include>
+      <include refid="classBaseQuery"></include>
+  	</select>
+    <!-- ++++++++++++++我关注的班级列表相关结束++++++++++++++++ -->
+    
+   <!-- ++++++++++++++全部班级列表相关开始++++++++++++++++ -->
+  	<!-- 全部班级列表 -->
+  	<select id="selectAllClassList" parameterType="java.util.Map" resultType="java.util.Map">
+  	 select 
+  	    <include refid="classBaseSql"></include>,tg.data_id as dataId
+  	    <include refid="allClassBaseSql"></include>
+  	    <include refid="classBaseQuery"></include>
+  	    <include refid="classBasePage"></include>
+  	</select>
+  	<!-- 全部班级记录数 -->
+  	<select id="getAllClassCount" parameterType="java.util.Map" resultType="Integer">
+  	  select
+  	      count(1)
+     <include refid="allClassBaseSql"></include>
+     <include refid="classBaseQuery"></include>
+  	</select>
+  	<!-- ++++++++++++++全部班级列表相关结束++++++++++++++++ -->
+  	<!-- ++++++++++++++我管理的班级列表相关开始++++++++++++++++ -->
+  	<!-- 我管理的班级列表 -->
+  	<select id="selectMyManageClassList" parameterType="java.util.Map" resultType="java.util.Map">
+  	select 
+  	    <include refid="classBaseSql"></include>,tg.data_id as dataId
+  	    <include refid="myManageClassBaseSql"></include>
+  	    <include refid="classBaseQuery"></include>
+  	    <include refid="classBasePage"></include>
+  	</select>
+  	<!-- 我管理的班级记录数 -->
+  	<select id="getMyManageClassCount" parameterType="java.util.Map" resultType="Integer">
+  	select
+  	   count(1)
+     <include refid="myManageClassBaseSql"></include>
+     <include refid="classBaseQuery"></include>
+  	</select>
+  	<!-- ++++++++++++++我管理的班级列表相关结束++++++++++++++++ -->
+  	  <!-- 获取班级的当前人数-->
+  	<select id="getClassCurrentCount" parameterType="java.util.Map" resultType="Integer">
+  	   select 
+		  count(1)
+	   from t_student ts
+	   where ts.`status` in(${stuStatusParam}) and ts.lq_class_id=#{lqClassId,jdbcType=INTEGER}
+  	</select>
+  	
+  	  	<!-- 获取当前年份的新开班数 -->
+  	<select id="getNewClassCount" resultType="Integer">
+  	select 
+  	  count(1)
+  	from t_lqclass tl
+  	where tl.class_goal=0 and YEAR(tl.create_time)=YEAR(NOW())
+  	</select>
+  	<!-- ==========查询班级列表结束================== -->
+
+<!-- 查询学员的当前所在班级信息 -->
+<select id="getMyClassInfo" parameterType="Integer" resultType="java.util.Map">
+select 
+tl.lq_class_id as lqClassId,
+tl.class_name as className,
+tl.type_pre as typePre,<!-- 一级类型 -->
+tl.type_real as typeReal,<!-- 二级类型 -->
+tl.course_type as courseType,<!-- 课程类别 -->
+tl.expect_starttime as expectStarttime,<!-- 预计开课时间 -->
+tl.start_time as startTime,<!-- 开课时间 -->
+tl.expect_school_endtime as expectSchoolEndtime,<!-- 拟校园结课日期 -->
+tl.school_endtime as schoolEndtime,<!-- 校园结课日期 -->
+tl.expect_graduate_time as expectGraduateTime,
+tl.graduate_time as graduateTime,
+tl.stu_count as stuCount,
+tl.real_count as realCount,
+tl.com_teacher_id as comTeacherId,
+tl.cep_teacher_id as cepTeacherId,
+tl.chr_teacher_id as chrTeacherId,
+tl.qq_group as qqGroup,
+tl.monitor_id as monitorId
+from t_lqclass tl
+where tl.lq_class_id=#{lqClassId,jdbcType=INTEGER}
+</select>
+ <!-- 根据学员userId获取其所在班级id -->
+ <select id="selectClassIdByUserId" parameterType="Integer" resultType="Integer">
+  select lq_class_id  from t_student where user_id=#{userId,jdbcType=INTEGER}
+ </select> 	
+ 
+   <select id="getLqClassInfoList" parameterType="java.lang.Integer" resultType="java.util.Map">
+	     select lc.lq_class_id,lc.class_name,lc.type_pre,lc.type_real,lc.course_type,lc.expect_starttime,lc.start_time,lc.expect_school_endtime,
+	    	   lc.school_endtime,lc.expect_graduate_time,lc.graduate_time,lc.stu_count,lc.real_count,
+				lc.com_teacher_id,lc.cep_teacher_id,lc.qq_group,lc.monitor_id,lc.chr_teacher_id,
+				lc.class_goal,lc.create_time,lc.close_time,lc.`status` as classStatus,tu.real_name as create_user
+		from t_lqclass lc
+    	LEFT JOIN t_user tu ON tu.user_id=lc.create_user_id
+		where lc.lq_class_id=#{classId}
+  </select>	
+  
+  
+  <select id="getLqClassStuListByClassId" parameterType="java.lang.Integer" resultType="java.util.Map">
+	    select us.user_id,us.real_name
+		from t_student st 
+		LEFT JOIN t_user us on us.user_id=st.user_id
+		where st.lq_class_id=#{classId}
+  </select>	
+  
+    <select id="selectcoursearrangementbyclassId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	   SELECT  SUM(ttca.class_time)  from t_teacher_course_arrangement   ttca  where ttca.class_id=#{classId}  and ttca.ca_status=0
+  </select>	
+  
+ <!--   查询某一班级签到记录 -->
+<select id="selectMemberStudent" parameterType="java.lang.Integer" resultType="map">
+select distinct b.user_id as userid, b.stu_no as stuNo,d.real_name as realName,c.univ_name as schoolName,
+ b.`status` as statusid,b.lq_class_id as nowclassid, a.class_id  as classid ,count(DISTINCT e.nnid) as cot
+,d.sex as sex ,d.tel as tel  from t_studentclass_log a 
+LEFT JOIN  t_student b on (a.user_id=b.user_id)
+LEFT JOIN  lq_universities c on(b.univ_code= c.univ_code)
+LEFT JOIN  t_user  d on (b.user_id = d.user_id)
+LEFT JOIN  t_visit_sub_log  e on (e.data_id=d.user_id)
+where a.class_id=#{classId}
+  GROUP BY b.user_id 
+order by b.update_time desc
+</select>  
+  <!--   查询某一班级签到记录 --> 
+  
+  <select id="selectMemberStudentsign" parameterType="map" resultType="map">
+SELECT * from 
+(SELECT COUNT(*)  as  kk from  t_student_sign  where  sutdent_id=${userid}   and  type=2 
+<if test="starttime!='' and starttime!=null">
+  and  create_time>'${starttime}'
+</if>
+<if test="endtime!='' and endtime!=null">
+   and create_time  &lt;   '${endtime}'  
+</if>
+) a,
+(SELECT COUNT(*)  as cd from  t_student_sign  where  sutdent_id=${userid1}   and  type=1 
+<if test="starttime!='' and starttime!=null">
+  and  create_time>'${starttime}'
+</if>
+<if test="endtime!='' and endtime!=null">
+   and create_time  &lt;    '${endtime}'  
+</if>
+)b,
+(SELECT COUNT(*)  as qj from  t_student_sign  where  sutdent_id=${userid2}   and  type=0
+<if test="starttime!='' and starttime!=null">
+  and  create_time>'${starttime}'
+</if>
+<if test="endtime!='' and endtime!=null">
+   and create_time &lt; '${endtime}'  
+</if>
+)c,
+(SELECT COUNT(*)  as zc from  t_student_sign  where  sutdent_id=${userid3}   and  ( type=3 or type=1)
+<if test="starttime!='' and starttime!=null">
+  and  create_time>'${starttime}'
+</if>
+<if test="endtime!='' and endtime!=null">
+   and create_time  &lt;   '${endtime}'  
+</if>
+)d 
+</select>
+
+
+<!-- 每日一讲 -->
+<select id="studentdaillist"  parameterType="Map"  resultType="Map"> 
+	SELECT @ROWNO := @ROWNO + 1 AS ROWNO, T.*
+  FROM (
+	SELECT  sdt.dt_type,sdt.evaluation, tt.real_name as studentname,tu.real_name  as  techername,sdt.dt_id ,DATE_FORMAT(sdt.create_time ,'%Y-%m-%d %T')  as create_time,sdt.create_teacher_id ,sdt.dt_content from t_student_daily_talk sdt
+	LEFT JOIN t_user  tu  on tu.user_id=sdt.create_teacher_id
+	LEFT JOIN t_user  tt  on tt.user_id=sdt.student_id 
+	where class_id=#{classid}
+    ORDER BY  dt_id  desc 
+	<if test="currpage!=null and currpage!=''">
+	limit #{fpage},#{pageSize}
+	</if>
+ )T, (SELECT @ROWNO := 0) T3
+</select>
+
+<select id="studentdaillistcount"  parameterType="Map"  resultType="int"> 
+	SELECT  count(dt_id) from t_student_daily_talk sdt
+	where class_id=#{classid}  
+
+
+</select>
+    <select id="selectClassRealCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT tl.real_count
+        FROM t_lqclass tl
+        WHERE tl.lq_class_id =#{param}
+    </select>
+</mapper>

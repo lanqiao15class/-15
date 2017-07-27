@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TJobDetailMapper">
+
+<!--   检查多个学生的职业状态,  -->
+<select id="getStudentJobStatus" parameterType="map" resultType="map">
+	SELECT 
+		 ts.user_id , tu.real_name, ts.jobstatus
+	FROM 
+		t_student  ts 
+		LEFT JOIN t_user tu ON  ts.user_id=tu.user_id
+		WHERE ts.user_id IN
+		<foreach collection="stulist"  item="item" open="(" separator="," close=")"> 
+        	#{item}
+   		</foreach>
+   	</select>
+   	
+
+
+  	<select id="getJobDetailBystuId" parameterType="java.lang.Integer" resultType="java.util.Map">
+		select jd.job_id,jd.user_id,jd.jobfrom_type,qybd.real_name as teacher_id,rzdj.real_name as entry_userid,jd.entry_time,lzdj.real_name as dismiss_userid,jd.dismiss_time,jd.dismiss_reason,
+		jd.position_name,jd.company_name,jd.position_salary,jd.position_type,jd.company_type,jd.company_scale,ci.city as city_id,jd.occupation_status,jd.inputtime_in,jd.inputtime_out
+		from t_job_detail jd
+		LEFT JOIN t_user qybd ON jd.teacher_id=qybd.user_id
+		LEFT JOIN t_user rzdj ON jd.entry_userid=rzdj.user_id
+		LEFT JOIN t_user lzdj ON jd.dismiss_userid=lzdj.user_id
+		LEFT JOIN lq_city ci ON ci.city_id=jd.city_id
+		where jd.user_id=#{stuId}
+		ORDER BY jd.inputtime_in DESC
+    </select>	
+    
+    
+    
+	
+<!--    入职登记页面列表 -->
+  <select id="selectStudentList" parameterType="map" resultType="map">
+select a.user_id as userid,
+ a.stu_no as stuNo,
+ d.real_name as realName,
+ b.class_name as className,
+ a.course_type as courseid,
+c.univ_name as schoolName,
+ b.`status` as statusid
+ from t_student a 
+LEFT JOIN  t_lqclass b on (a.lq_class_id =b.lq_class_id)
+LEFT JOIN  lq_universities c on(a.univ_code= c.univ_code)
+LEFT JOIN  t_user  d on (a.user_id = d.user_id)
+where a.user_id in 
+ 		<foreach collection="userids" index="item" item="item" open="(" separator="," close=")"> 
+        	#{item}
+   		</foreach> 
+</select>  
+
+<!-- 根据学员userId获取职业经历 -->
+<select id="getMyWorkExpByStuUserId" parameterType="Integer" resultType="java.util.Map">
+SELECT
+tjb.job_id as jobId,
+tjb.position_name as positionName,
+tjb.position_salary as positionSalary,
+tjb.position_type as positionType,
+tjb.company_name as companyName,
+tjb.company_scale as companyScale,
+tjb.company_type as companyType,
+ct.city,
+tjb.entry_time as entryTime,
+tjb.dismiss_time as dismissTime,
+tjb.occupation_status as occupationStatus
+from t_job_detail tjb
+LEFT JOIN lq_city ct on ct.city_id=tjb.city_id where tjb.user_id=#{userId,jdbcType=INTEGER}
+order by tjb.inputtime_in desc
+</select>
+</mapper>

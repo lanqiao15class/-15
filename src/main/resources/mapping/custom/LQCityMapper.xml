@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.LQCityMapper">
+ <cache
+   eviction="FIFO"
+   flushInterval="86400000"
+   size="11200"
+   readOnly="true" />
+   
+  <select id="findProvinces" resultType="java.util.Map"  useCache="true">
+  select lq.city_id as cityId,lq.city from lq_city lq where lq.pid=0
+  </select>
+  
+  <select id="selectByProvId" parameterType="Integer" resultType="java.util.Map"  useCache="true">
+  select lq.city_id as cityId,lq.city from lq_city lq where lq.pid=#{cid,jdbcType=INTEGER} and pid!=0
+  </select>
+  
+  <select id="getById" parameterType="Integer" resultType="String"  useCache="true">
+  select city from lq_city where city_id=#{cityId,jdbcType=INTEGER}
+  </select>
+</mapper>

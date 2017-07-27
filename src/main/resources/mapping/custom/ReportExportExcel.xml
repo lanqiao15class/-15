@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.ReportExportExcel">
+    
+	 <sql id="whereQuerySql">
+	 <if test="optype ==1 and stime !=null">
+<!-- 	 	开课时间 -->
+	   and ts.begin_studytime between #{stime} and #{etime}
+
+	 </if>
+	 
+	 <if test="optype ==2 and stime !=null">
+<!-- 	 	结业时间 -->
+	   and ts.end_studytime between #{stime} and #{etime}
+
+	 </if>
+	 
+	  
+	 <if test="optype ==3 and stime !=null">
+<!-- 	 	首次入职时间 -->
+	   and ts.emp_time between #{stime} and #{etime}
+
+	 </if>
+	 
+	   
+	 <if test="optype ==4 and stime !=null">
+<!-- 	 	就业服务结束时间 -->
+	   and ts.jobservice_endtime between #{stime} and #{etime}
+
+	 </if>
+	 
+	  <if test="optype ==5 and stime !=null">
+<!-- 	 	报名费时间 -->
+	   and income.last_pay_time between #{stime} and #{etime} and income.pay_goal=1
+	 </if>
+	  <if test="optype ==6 and stime !=null">
+<!-- 	 	实训费时间 -->
+	   and income.last_pay_time between #{stime} and #{etime} and income.pay_goal=2
+	 </if>
+	 
+	 <if test="stuStatus !=null and stuStatus!='' ">
+		 and ts.status =#{stuStatus}
+	 </if>
+	 <if test="signStatus !=null  and signStatus!='' ">
+	  and ts.is_avaiable =#{signStatus}
+	 </if>
+	 <if test="studyStatus !=null  and studyStatus!=''" >
+	 	 and ts.has_paid =#{studyStatus}
+	 </if>
+	  <if test="select_school_id !=null and select_school_id !=''" >
+	 	and ts.univ_code=#{select_school_id}
+	 </if>
+<!-- 	 	学生姓名 -->
+	 <if test="student_name_export !=null and student_name_export !=''">
+	 	and tu.real_name  like CONCAT('%',#{student_name_export,jdbcType=VARCHAR},'%')
+	 </if>
+	 
+	 </sql>
+	 
+	 
+<!-- 	  查询数据,准备写入excel 文件-->
+<select id="selectExportListForFile" parameterType="map" resultType="map">
+select ts.user_id, ts.stu_no stuNo, tu.real_name realName,tu.id_card idCard, un.univ_name unvName,
+ts.jobservice_starttime jobServiceStarttime, ts.emp_time empTime, ts.jobservice_endtime jobServiceEndtime,
+inc.standard_money signStandardFee, inc.favour_money signfavourFee, inc.standard_money -inc.favour_money as signShouldFee,ts.is_avaiable signStatus,
+inc2.standard_money studyStandardFee, inc2.favour_money studyfavourFee, inc2.standard_money -inc2.favour_money as studyShouldFee,ts.has_paid studyStatus
+,inc2.pay_type as pay_type
+from t_student ts 
+left JOIN  t_user tu on (ts.user_id =  tu.user_id)
+left JOIN  lq_universities un on (ts.univ_code = un.univ_code)
+left join t_income_log inc on (inc.user_id = ts.user_id and inc.pay_goal =1)
+left join t_income_log inc2 on (inc2.user_id = ts.user_id and inc2.pay_goal =2)
+ <if test="optype ==5  or optype ==6">
+<!-- 	报名费时间 -->
+	 left join t_income_log income on (income.user_id = ts.user_id)
+</if>
+	 
+where ts.status in 
+<foreach collection="statuslist" index="item" item="item" open="(" separator="," close=")">
+#{item}
+</foreach>
+ <include refid="whereQuerySql"></include>
+ order by tu.create_time desc 
+</select>
+<!--  查询每个学生所在的班级 -->
+<select id="export_studentClassLog"  parameterType="int" resultType="map">
+  select tlq.class_name , tulog.create_time , tulog.exit_time
+   from t_studentclass_log tulog 
+  left join t_lqclass tlq on (tlq.lq_class_id = tulog.class_id)
+   where tulog.user_id = #{userid}
+   order by create_time
+</select>
+<!--  首次入职企业名称. -->
+<select id="export_studentCompanyName"  parameterType="int" resultType="string">
+   select company_name from t_job_detail 
+    where user_id=#{userid}
+    order by entry_time 
+    limit 1
+</select>
+
+<!--   减免原因 -->
+<select id="export_studentRemissReson"  parameterType="int" resultType="map">
+select 
+(
+select  GROUP_CONCAT(remarks) as remarks  from t_student_remission_log
+  where cost_type =1 
+  and remission_userid =#{user_id}
+
+)  signfavourReason,
+(
+select GROUP_CONCAT(remarks) as  remarks  from t_student_remission_log
+  where cost_type =2
+  and remission_userid =#{user_id}
+
+) studyfavourReason
+
+</select> 
+
+<!--   收入金额 -->
+<select id="selectExportMonthData" parameterType="map" resultType="map">
+select   sum(a.receivable_money) as month_money  , max(a.create_date) as month_paytime
+ from t_student_receivable_log  a
+where receivable_userid=#{user_id}
+and a.create_date BETWEEN #{monthbegin} and  #{monthend}
+and a.cost_type =#{costtype}
+</select>
+
+<!--  累计金额 -->
+<select id="selectExportMonthData_accu" parameterType="map" resultType="map">
+select   sum(a.receivable_money) as  totalMoney
+ from t_student_receivable_log  a
+where receivable_userid=#{user_id}
+and a.create_date  &lt; #{monthend}
+and a.cost_type =#{costtype}
+</select>
+
+<!-- 	退费 -->
+<select id="selectExportMonthData_back" parameterType="map" resultType="map">
+select   
+sum(b.refund_money) as month_money, max(b.remarks) as month_remark
+ from  t_student_refund_log b 
+where refund_userid=#{user_id}
+and b.create_date  BETWEEN #{monthbegin} and  #{monthend}
+ and b.cost_type =#{costtype}
+</select>
+
+
+
+
+<!-- 	  查询数据, 显示到财务报表 -->
+<select id="selectExportList" parameterType="map" resultType="map">
+select ts.user_id , ts.stu_no stuNo , tu.real_name realName, tu.id_card idCard, un.univ_name schoolName,tuquyu.real_name as quyuManager, 
+tujl.real_name as jiliManager,tugw.real_name as  guwenManager, ts.is_avaiable
+from t_student ts 
+left JOIN  t_user tu on (ts.user_id =  tu.user_id)
+left JOIN  lq_universities un on (ts.univ_code = un.univ_code)
+left JOIN  t_user tuquyu on (tuquyu.user_id = ts.teacherid_inspector)
+left JOIN  t_user tujl on (tujl.user_id = ts.inv_teacher_id)
+left JOIN  t_user tugw on (tugw.user_id = ts.teacherid_advisor)
+ <if test="optype ==5  or optype ==6">
+<!-- 	 	报名费时间 -->
+	 left join t_income_log income on (income.user_id = ts.user_id)
+</if>
+	 
+where ts.status in 
+<foreach collection="statuslist" index="item" item="item" open="(" separator="," close=")">
+#{item}
+</foreach> 
+
+ <if test="classid !=null  and classid !=''">
+
+	  and ts.lq_class_id=#{classid}
+</if>
+ <include refid="whereQuerySql"></include>
+ order by tu.create_time desc 
+ limit #{currindex},#{pagesize, jdbcType=INTEGER}
+</select>
+
+<!--  统计记录数 -->
+<select id="selectExportList_count" parameterType="map" resultType="int">
+select count(*) as ccount
+from t_student ts 
+left JOIN  t_user tu on (ts.user_id =  tu.user_id)
+left JOIN  lq_universities un on (ts.univ_code = un.univ_code)
+left JOIN  t_user tuquyu on (tuquyu.user_id = ts.teacherid_inspector)
+left JOIN  t_user tujl on (tujl.user_id = ts.inv_teacher_id)
+left JOIN  t_user tugw on (tugw.user_id = ts.teacherid_advisor)
+ <if test="optype ==5  or optype ==6">
+<!-- 	报名费时间 -->
+	 left join t_income_log income on (income.user_id = ts.user_id)
+</if>
+	 
+where ts.status in 
+<foreach collection="statuslist" index="item" item="item" open="(" separator="," close=")">
+#{item}
+</foreach> 
+ <include refid="whereQuerySql"></include>
+ 
+ <if test="classid !=null  and classid !=''">
+
+	  and ts.lq_class_id=#{classid}
+</if>
+</select>
+
+
+<select id="selectsubFee"  parameterType="int" resultType="map">
+select a.current_pay_money as currentPayMoney, a.standard_money as standardMoney, a.favour_money as favourMoney, b.is_avaiable
+  from t_income_log a 
+  LEFT JOIN t_student b on(a.user_id = b.user_id)
+  where a.user_id=#{user_id} and a.pay_goal = 1
+
+</select>
+
+
+</mapper>

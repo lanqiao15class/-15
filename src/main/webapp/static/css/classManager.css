@@ -1,0 +1,129 @@
+@charset "utf-8";
+.gird-progress{margin-right:15px;position:relative;}
+.progress-bar{width:80px;height:8px;border-radius:2px;-webkit-border-radius:2px;background:#f2f4f6;position:relative;top:12px;}
+.progress-bar .down{height:8px;background:#1bbc9b;border-radius:2px;-webkit-border-radius:2px;position:absolute;top:0;left:0;}
+.progress-num{position:absolute;right:0;top:0;color:#4f9ae8;}
+/*班级详情*/
+.search-part-tall .class-detail{background:#f3f5f8;height:88px;}
+/*创建每日一讲弹窗*/
+.add-every-day{padding:0 0 0 50px;}
+.add-every-day .align-right-label{width:100px;}
+.add-every-day input,.add-every-day select ,.add-every-day textarea{ width:300px;}
+.add-every-day .select-search-box{width:300px;}
+.add-every-day .select-search-box .searchable-select-input{width:260px !important;}
+.add-every-day .error-tips{padding-left:100px;}
+/*点评*/
+.radio-comments{background:url(../images/icon/icon_comment.png) no-repeat left top;position:relative;text-indent:25px;display:inline-block;margin-right:40px;cursor:pointer;color:#c6d5e0;}
+.radio-comments input{opacity:0;position:absolute;top:0;left:0;width:60px;}
+.radio-comments.good{background-position:0 -1px;}
+.radio-comments.good:hover,.good.active{background-position:0 -32px;}
+.radio-comments.z{background-position:-106px 0;}
+.radio-comments.z:hover,.z.active{background-position:-106px -31px;}
+.radio-comments.b{background-position:-207px -1px;}
+.radio-comments.b:hover,.b.active{background-position:-207px -32px;}
+.radio-comments:hover,.radio-comments.active{color:#ff6c60;}
+
+/*周报详情弹框*/
+.show-weekly{padding:20px 30px 0 30px;}
+.show-weekly .line-item-ver{margin-bottom:10px;}
+.show-weekly .align-right-label{width:80px;}
+.show-weekly .show-time{color:#a4a6ad;display:inline-block;vertical-align:middle;}
+.show-weekly .show-txt{width:370px;height:110px;border:1px solid #e1e9ef;line-height:26px;overflow-y:auto;display:inline-block;padding:0 5px;border-radius:4px;}
+.bold{font-weight:bold;}
+.show-weekly .show-comments{border-top:1px solid #ededed;padding-top:15px;}
+.show-weekly .teacher-comments-list{margin-bottom:20px;}
+.show-weekly .teacher-comments-list li{padding:20px 0 15px 0;border-bottom:1px solid #ededed;}
+.show-weekly .teacher-comments-list li span{display:block;text-align:right;font-size:12px;color:#7087a3;}
+.show-weekly .status-cmt{width:100%;}
+
+/*排课*/
+.relative{position:relative;}
+.showline{display:inline;}
+.courseBtn{margin-right:20px;margin-top:5px;font-size:14px;}
+.y-course .courseWeek{margin:30px 20px;}
+.y-course .courseWeek label,.y-course .courseWeek select{display:inline-block;}
+.y-course .courseWeek select{width:315px;}
+.y-course .addCourseTab{padding:0 20px 20px 20px;}
+.y-course .addCourseTab table{width:100%;border-collapse: collapse;}
+.y-course .addCourseTab table td{padding:10px;border:1px solid #ccc;text-align:center;}
+.y-course .addCourseTab table thead tr{background:#f2f4f6;}
+.y-course .t-c a{padding:0 5px;}
+.y-course .t-c i{width:12px;display:inline-block;color:#559ae2;font-size:18px;}
+.y-course .course-add{font-size:12px;color:#559ae2;display:block;}
+.y-course .t-r{text-align:right !important;}
+.y-course .showCourse{display:inline-block;padding:0 3px;}
+.y-course .add-course{position:absolute;left:0;top:0;width:400px;background:#fff;border-radius:4px;box-shadow:0 2px 4px #e8eef2;padding:20px 20px 0 20px;text-align:left;}
+.add-course .line-item-ver{margin-bottom:10px;}
+.add-course .align-right-label{width:86px;text-align:right;padding-right:14px;}
+.add-course input[type='text'] , .add-course textarea{width:270px;}
+.add-course .error-tips{padding-left:100px;}
+.add-course .courseTime{width:90px !important;}
+.add-course .w68{width:68px}
+.add-course .label-radio{vertical-align:middle;}
+
+/*签到*/
+.iconcheked{background:url(../images/icon/status1.png) no-repeat center/contain;width:30px;height:30px;display:inline-block;}
+.iconleave{background:url(../images/icon/status2.png) no-repeat  center/contain;width:30px;height:30px;display:inline-block;}
+.iconlate{background:url(../images/icon/status3.png) no-repeat  center/contain;width:30px;height:30px;display:inline-block;}
+.iconabsenteeism{background:url(../images/icon/status4.png) no-repeat  center/contain;width:30px;height:30px;display:inline-block;}
+.select-leave{padding:30px 30px 0 30px;}
+.select-leave .line-item-ver{margin-bottom:20px;}
+.select-leave .label-radio{vertical-align:middle;width:80px;display:inline-block;}
+.select-leave .txt-reason{width:100%}
+.code-sign{text-align:center;padding-bottom:25px;}
+.code-sign .code-main{margin:40px 40px 20px 40px;width:600px;height:600px;background:#dee0e7;}
+.code-sign .code-main img{width:600px;height:600px;overflow:hidden;}
+.code-sign .code-info{color:#7087a3;}
+
+/*我的课表*/
+.my-class{overflow-y:auto;}
+.tab-week-list{margin:20px 0;width:100%;height:36px;line-height:36px;border:1px solid #bfbfbf;border-radius:4px;}
+.tab-week-list a{display:inline-block;text-align:center;width:33%;}
+.tab-week-list a.curr{background:#559ae2;color:#fff;}
+.evaluateCnt .msgBox{border:1px solid #dde1e5;border-radius:4px;margin-bottom:20px;}
+.evaluateCnt .msgBox .top{height:40px;line-height:40px;background:#f3f5f8;padding-left:25px}
+.evaluateCnt .msgBox .msgContent{padding:20px 0;width:100%;position:relative;border-top:1px solid #dde1e5;padding-bottom:20px;}
+.evaluateCnt .msgBox .msgContent .msgC{padding-left:20px;padding-right:40px;height:96px;padding-right:240px;}
+.evaluateCnt .msgBox .msgContent .title{font-size:16px;color:#559ae2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.evaluateCnt .msgBox .msgContent .msgC .shortinfo{margin-top:10px;height:44px;line-height:20px;overflow:hidden;}
+.evaluateCnt .msgBox .msgContent .msgC .time{color:#91a1b3;}
+.evaluateCnt .msgBox .msgContent .msgInfo{width:210px;border-left:1px solid #dde1e5;height:96px;position:absolute;right:0;top:20px;}
+.evaluateCnt .msgBox .msgContent .addPl{color:#559ae2;display:inline-block;vertical-align:middle;}
+.evaluateCnt .msgBox .msgContent .msgInfo .icons{padding-left:28px;margin-top:28px;}
+.addPl{margin-left:30px;vertical-align:top;display:inline-block;margin-top:-20px}
+.evaluateCnt .msgBox .msgContent .msgInfo .icon-pl{background:url(../images/icon/icon-pl.png) no-repeat;width:20px;height:17px;display:inline-block;vertical-align:middle;padding-right:10px;}
+.evaluateCnt .msgBox .msgContent .msgInfo .addPl i,.evaluation-teacher .label-radio i{display:inline-block;vertical-align:middle;padding-left:6px;}
+.icon-hp{background:url(../images/icon/icon-hp.png) no-repeat;width:18px;height:20px;}
+.icon-zp{background:url(../images/icon/icon-zp.png) no-repeat;width:18px;height:20px;}
+.icon-cp{background:url(../images/icon/icon-cp.png) no-repeat;width:21px;height:20px;}
+/*评价老师弹框*/
+.evaluation-teacher{padding:20px 20px 0 20px;}
+.evaluation-teacher .line-item-ver{margin-bottom:10px;}
+.evaluation-teacher .line-item-ver .intro{border-bottom:1px solid #f0f0f0;padding-bottom:15px;}
+.evaluation-teacher .line-item-ver .align-right-label{width:40px;}
+.evaluation-teacher .line-item-ver textarea{width:100%;font-size:14px;}
+.evaluation-teacher .label-radio{margin-right:40px;}
+.evaluation-teacher .label-radio i{margin-left:10px;}
+
+/*我的签到*/
+.checkStatus{width:100px !important;text-align:center;vertical-align:middle;}
+.checkStatus em{display:block;color:#91a1b3;}
+.checkStatus span{margin-top:28px;}
+
+/*我的周报*/
+.evaluateCnt .weekbox:first-child{border-top:1px solid #f0f0f0;}
+.weekbox{padding:20px;border-bottom:1px solid #f0f0f0;}
+.weekbox .weekTime{color:#5197e5;}
+.weekbox .weekMain{line-height:20px;margin-top:10px;height:44px;overflow:hidden;text-overflow:ellipsis;}
+.weekbox:hover{background:#f5f5f5;}
+
+.weekly-student{padding:20px 20px 0 20px;}
+.weekly-student .line-item-ver:first-child{margin-bottom:16px;}
+.weekly-student .line-item-ver select{width:320px;}
+.weekly-student .line-item-ver .align-right-label{text-align:right;width:70px;margin-right:20px;}
+.weekly-student .line-item-ver textarea{width:740px;height:110px;}
+.weekly-student .line-item-ver textarea:disabled{background:#fff;margin-bottom:16px;}
+.weekly-student .line-item-ver .error-tips{padding-left:92px;}
+.weekly-student .teacherPl{border:1px solid #f0f0f0;border-left:0;border-right:0;padding:15px;margin-bottom:20px;}
+.weekly-student .teacherPl .cmt{padding:10px 10px 10px 0;line-height:20px;}
+.weekly-student .teacherPl .cmt .cmt-time{font-size:12px;color:#7087a3;text-align:right;display:block;padding-right:10px;}

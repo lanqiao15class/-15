@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="easydropdown.css" />
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			ul,li{
+				list-style: none;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+
+		<select class="dropdown">
+			<option value="1">option1</option>
+			<option value="2">option2</option>
+			<option value="3">option3</option>
+			<option value="4">option4</option>
+			<option value="1">option1</option>
+			<option value="2" checked>1111111</option>
+			<option value="3">option3</option>
+			<option value="4">option4</option>
+			<option value="1">option1</option>
+			<option value="2">option2</option>
+			<option value="3">option3</option>
+			<option value="4">option4</option>
+			<option value="1">option1</option>
+			<option value="2">option2</option>
+			<option value="3">option3</option>
+			<option value="4">option4</option>
+		</select>
+		
+		<button>select</button>
+		
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script src="jquery.easydropdown.min.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("select").easyDropDown('select','2');
+				
+				$("select").change(function(){
+					alert($(this).val())
+				});
+				
+				$("button").click(function(){
+					$("ul li").eq(3).trigger("click");
+				});
+			});
+		</script>
+	</body>
+
+</html>

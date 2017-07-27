@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.dao.TIncomeLogMapper" >
+
+  <!-- 按ids和费用类型获取学员缴费列表 -->
+  <select id="getTableData" parameterType="java.util.Map" resultType="java.util.Map">
+  		SELECT
+			inBMF.standard_money AS htMoney,inBMF.favour_money AS jmMoney,inBMF.current_pay_money AS yjMoney,inBMF.back_money AS thMoney,
+			u.real_name AS studentName,un.univ_name AS schoolName,s.`status`,s.stu_no AS stuNo,s.user_id AS stuId
+		FROM 
+			t_student s
+		LEFT JOIN t_income_log inBMF ON inBMF.user_id=s.user_id
+		LEFT JOIN lq_universities un ON un.univ_code=s.univ_code
+		LEFT JOIN t_user u ON u.user_id=s.user_id
+		WHERE 
+			 inBMF.pay_goal=#{payGoal} and s.user_id in
+			 <foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+	        	#{item}  
+	   		 </foreach>	 
+  </select>
+  
+  <!-- 获取缴学费学员列表 -->
+<!--   <select id="getTableDataXF" parameterType="java.util.Map" resultType="java.util.Map"> -->
+<!--   		SELECT -->
+<!-- 			inXF.standard_money AS htMoney,inXF.favour_money AS jmMoney,inXF.current_pay_money AS yjMoney,inXF.back_money AS thMoney, -->
+<!-- 			u.real_name AS studentName,un.univ_name AS schoolName,s.`status`,s.stu_no AS stuNo,s.user_id AS stuId -->
+<!-- 		FROM  -->
+<!-- 			t_student s -->
+<!-- 		LEFT JOIN t_income_log inXF ON inXF.user_id=s.user_id -->
+<!-- 		LEFT JOIN lq_universities un ON un.univ_code=s.univ_code -->
+<!-- 		LEFT JOIN t_user u ON u.user_id=s.user_id -->
+<!-- 		WHERE  -->
+<!-- 			 inXF.pay_goal=#{payGoal} and s.user_id in -->
+<!-- 			 <foreach collection="list" index="item" item="item" open="(" separator="," close=")">  -->
+<!-- 	        	#{item}   -->
+<!-- 	   		 </foreach>	  -->
+<!--   </select> -->
+  
+  
+  
+<!--======================= 学费回款管理开始================== -->
+<!-- +++++++++++++++++=====baseSql开始++++++++++++++++ -->
+<sql id="feeBaseSql">
+ts.user_id as stuUserId,
+ts.stu_no as stuNo,
+tu.real_name as realName,
+tl.class_name as className,
+uv.univ_name as schoolName,
+ts.`status`,
+ts.is_avaiable as isAvaiable,
+tv.standard_money as avStanMoney,
+ts.has_paid as hasPaid,
+ths.standard_money as hasStanMoney,
+ths.favour_money as hasFavMoney,
+ts.update_time as updateTime
+</sql>
+<sql id="feeBaseJoin">
+LEFT JOIN t_user tu on ts.user_id=tu.user_id
+LEFT JOIN t_lqclass tl on ts.lq_class_id=tl.lq_class_id
+LEFT JOIN lq_universities uv on ts.univ_code=uv.univ_code
+LEFT JOIN t_income_log tv on (ts.user_id=tv.user_id and tv.pay_goal=1)
+LEFT JOIN t_income_log ths on (ts.user_id=ths.user_id and ths.pay_goal=2)
+</sql>
+<sql id="feeBaseWhere">
+where ts.`status` in(${stuStatusParam}) and ts.audit_status=#{auditStatusParam}
+</sql>
+<sql id="feeBasePage">
+order by ts.has_paid,ts.is_avaiable,ts.update_time desc
+limit #{currpage},#{pageSize}
+</sql>
+<sql id="myManageBaseAnd">
+and (ts.teacherid_inspector=#{teaUserId,jdbcType=INTEGER} 
+    or ts.teacherid_advisor=#{teaUserId,jdbcType=INTEGER}
+    or ts.inv_teacher_id=#{teaUserId,jdbcType=INTEGER}
+    or tl.com_teacher_id=#{teaUserId,jdbcType=INTEGER} 
+    or tl.cep_teacher_id=#{teaUserId,jdbcType=INTEGER}
+    or tl.chr_teacher_id=#{teaUserId,jdbcType=INTEGER})
+</sql>
+<sql id="feeBaseQuery">
+<if test="ifThisYear !=null"><!-- 用于统计当前年份的劝退，开除，退学人数 -->
+and YEAR(ts.update_time)=YEAR(now())
+</if>
+<if test="isAvaiable_lq !=null">
+and ts.is_avaiable=#{isAvaiable_lq,jdbcType=INTEGER}
+</if>
+<if test="hasPaid_lq !=null">
+and ts.has_paid=#{hasPaid_lq,jdbcType=INTEGER}
+</if>
+<if test="select_school_id !=null">
+and uv.univ_code=#{select_school_id,jdbcType=INTEGER}
+</if>
+<if test="stuStatus_lq !=null">
+and ts.`status`=#{stuStatus_lq,jdbcType=INTEGER}
+</if>
+<if test="regional_director_userid !=null">
+and ts.teacherid_inspector=#{regional_director_userid,jdbcType=INTEGER}
+</if>
+<if test="recruit_manager_userid !=null">
+and ts.inv_teacher_id=#{recruit_manager_userid,jdbcType=INTEGER}
+</if>
+<if test="course_advisor_useid !=null">
+and ts.teacherid_advisor=#{course_advisor_useid,jdbcType=INTEGER}
+</if>
+<if test="student_name_lq !=null">
+and tu.real_name like concat('%',#{student_name_lq,jdbcType=VARCHAR},'%')
+</if>
+</sql>
+<!-- +++++++++++++++++=====baseSql结束++++++++++++++++ -->
+<!-- ++++++++++++++我管理的开始++++++++++++++++++++++++++ -->
+<select id="getMyManageStuFeeList" parameterType="java.util.Map" resultType="java.util.Map">
+select
+ <include refid="feeBaseSql"></include>
+from t_student ts
+<include refid="feeBaseJoin"></include>
+<include refid="feeBaseWhere"></include>
+<include refid="myManageBaseAnd"></include>
+<include refid="feeBaseQuery"></include>
+<include refid="feeBasePage"></include>
+</select>
+<select id="getMyManageStuFeeCount" parameterType="java.util.Map" resultType="Integer">
+select
+ count(1)
+from t_student ts
+<include refid="feeBaseJoin"></include>
+<include refid="feeBaseWhere"></include>
+<include refid="myManageBaseAnd"></include>
+<include refid="feeBaseQuery"></include>
+</select>
+<!-- ++++++++++++++我管理的结束++++++++++++++++++++++++++ -->
+<!-- ++++++++++++++++++++全部的开始+++++++++++++++++++++ -->
+<select id="getAllStuFeeList" parameterType="java.util.Map" resultType="java.util.Map">
+select 
+  <include refid="feeBaseSql"></include>
+from t_student ts
+<include refid="feeBaseJoin"></include>
+<include refid="feeBaseWhere"></include>
+<include refid="feeBaseQuery"></include>
+<include refid="feeBasePage"></include>
+</select>
+<select id="getAllStuFeeCount" parameterType="java.util.Map" resultType="Integer">
+select 
+   count(1)
+from t_student ts
+<include refid="feeBaseJoin"></include>
+<include refid="feeBaseWhere"></include>
+<include refid="feeBaseQuery"></include>
+</select>
+<!-- ++++++++++++++++++++全部的结束+++++++++++++++++++++ -->
+<!-- ======================学费回款管理结束=================== -->
+  <!-- 根据userId，type获取学员列表 -->
+  <select id="getIncomeLogByUserIdAndType" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT 
+  		<include refid="Base_Column_List"/>
+	 FROM 
+	 	t_income_log 
+	 WHERE 
+	 	user_id=#{stuId} AND pay_goal=#{payGoal}
+  </select>
+  
+  	<select id="getIncomeLogBystuId" parameterType="java.util.Map" resultType="java.util.Map">
+	  	select ts.is_avaiable,il.last_pay_time,il.current_pay_money,il.pay_type,il.standard_money,il.favour_money,il.back_money,il.last_back_time,ts.has_paid
+		from t_income_log il
+		LEFT JOIN t_student ts ON ts.user_id=il.user_id
+		where il.user_id=#{stuId} and il.pay_goal=#{payGoal}
+    </select>	
+  
+  <select id="getIncomeListBystuId" parameterType="java.util.Map" resultType="java.util.Map">
+		select fy.zt,fy.receivable_money,fy.create_date,fy.pay_way,us.real_name as agency_userid,fy.remarks,fy.receivable_userid,tu.real_name as shengpiid,tr.real_name as oper_userid,fy.inputtime 
+		FROM
+		(select 1 as zt,receivable_money,create_date,pay_way,agency_userid,remarks,receivable_userid,null as shengpiid,cost_type,oper_userid,inputtime 
+			from t_student_receivable_log 
+		UNION all
+		select 2 as zt,refund_money,create_date,null,agency_userid,remarks,refund_userid,approval_userid,cost_type,oper_userid,inputtime  
+			from t_student_refund_log
+		UNION all
+		select 3 as zt,reduce_money,create_date,null,null,remarks,remission_userid,approral_userid,cost_type,oper_userid,inputtime   
+			from t_student_remission_log) fy 
+		LEFT JOIN t_user tu ON tu.user_id=fy.shengpiid
+		LEFT JOIN t_user us ON us.user_id=fy.agency_userid
+		LEFT JOIN t_user tr ON tr.user_id=fy.oper_userid
+		where fy.cost_type=#{payGoal} and fy.receivable_userid=#{stuId}
+		ORDER BY fy.inputtime DESC   
+  </select>
+  
+  <!-- 获取可缴费的最大金额、可减免的最大金额 -->
+  <select id="getMaxInMoney" parameterType="java.util.Map" resultType="java.lang.Long">
+  	SELECT 
+  		min(standard_money-favour_money-current_pay_money) AS maxMoney 
+  	FROM 
+  		t_income_log
+	WHERE 
+		user_id IN
+		<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+	        #{item}  
+	   	</foreach>
+		AND pay_goal=#{payGoal}
+  
+  </select>
+  
+   <!-- 获取可以输入可退费的最大金额 -->
+  <select id="getMaxOutMoney" parameterType="java.util.Map" resultType="java.lang.Long">
+  	SELECT 
+  		min(current_pay_money - back_money) AS maxMoney 
+  	FROM 
+  		t_income_log
+	WHERE 
+		user_id IN
+		<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+	        #{item}  
+	   	</foreach>
+		AND pay_goal=#{payGoal}
+  
+  </select>
+  
+  
+</mapper>

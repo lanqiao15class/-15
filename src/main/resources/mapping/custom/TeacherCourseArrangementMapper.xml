@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TeacherCourseArrangementMapper">
+
+    <sql id="courseArrangementSql">
+        tc.ca_id AS caId,
+        tc.class_id AS classId,
+        tu.real_name AS teaName,
+        tl.class_name AS className,
+        tc.ca_name AS caName,
+        tc.ca_type AS caType,
+        tc.ca_content AS caContent,
+        tc.start_time AS startTime,
+        tc.end_time AS endTime,
+        tc.class_time AS classTime,
+        tc.create_time AS createTime,
+        tc.ca_status AS caStatus,
+        tc.schooltime AS schoolTime,
+        tc.syllabus_id AS syllabusId
+    </sql>
+
+    <select id="findAllByUserId" parameterType="java.lang.Integer"  resultType="java.util.Map">
+        select
+        <include refid="courseArrangementSql"></include>
+        from t_teacher_course_arrangement tc ,t_user tu ,t_lqclass tl
+        WHERE tc.class_id = tl.lq_class_id AND tc.user_id = tu.user_id AND tc.user_id = #{param}
+    </select>
+
+    <sql id="selectInfo">
+        <if test="caStatus !=null">
+            and tc.ca_status=#{caStatus,jdbcType=INTEGER}
+        </if>
+        <if test="courseType !=null">
+            and tl.course_type=#{courseType,jdbcType=INTEGER}
+        </if>
+        <if test="beginTime!=null and endTime!=null">
+            and tc.start_time BETWEEN #{beginTime} AND #{endTime}
+            and tc.end_time BETWEEN #{beginTime} AND #{endTime}
+        </if>
+    </sql>
+
+    <select id="selectArrangeByInfo" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+    <include refid="courseArrangementSql"></include>
+    FROM t_teacher_course_arrangement tc ,t_user tu ,t_lqclass tl
+    WHERE tc.class_id = tl.lq_class_id AND tc.user_id = tu.user_id AND tc.user_id = #{teaUserId}
+    <include refid="selectInfo"></include>
+    </select>
+
+</mapper>

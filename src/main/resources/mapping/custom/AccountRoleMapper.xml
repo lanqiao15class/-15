@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.lanqiao.dao.SysRoleMapper" >
+  <select id="getRoles" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role
+    where user_id= #{userId,jdbcType=INTEGER}   ORDER BY  create_date 
+  </select>
+   <select id="getRolesName" resultType="java.util.Map"   parameterType="java.lang.Integer" >
+    SELECT  sr.id  ,sr.name  from sys_user_role  sur  ,sys_role  sr  where sur.user_id=#{id}   and   del_flag=0  and sur.role_id=sr.id
+  </select>
+  <update id="resetPassword"    parameterType="java.util.Map" >
+  	update  t_user set  password=#{pwd} ,salt=#{salt}  where user_id=#{userId}
+  </update>
+  
+   <select id="roleIdGetFunction" parameterType="String" resultType="java.util.Map">
+ 	   SELECT sf.functionid  as  id,sf.functionname  as name,sf.pid as pId,sf.isdir   from  sys_role_function  srf, sys_function  sf  where srf.functionid=sf.functionid  and srf.roleid=#{roleId}
+ 	   </select>
+ 	   <select id="functionbyPid" parameterType="Integer" resultType="java.util.Map">
+ 	 SELECT sf.functionid as id,sf.functionname as name,sf.pid as pId ,sf.isdir  from sys_function sf where sf.functionid=#{pid}
+ 	   </select>
+ 	   
+ 	   <delete id="deleteByUserId" parameterType="String">
+    delete from sys_user_role
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  
+   <delete id="deleteByRoleId" parameterType="String">
+    delete from sys_role_function
+    where roleid = #{roleid,jdbcType=VARCHAR}
+  </delete>
+</mapper>

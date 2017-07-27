@@ -1,0 +1,12 @@
+/*表头样式*/
+.slick-header-column.ui-state-default {height: 34px;line-height: 34px; border-top:1px solid #d0d2d4;}
+.slick-header-columns {background: #c4e1ff;border-bottom: 1px solid silver;}
+.slick-column-name { padding:1px 4px;}
+.slick-cell-checkboxsel input[type='checkbox']{margin:0px;}
+.odd { background:#f6f6f6;}
+.slick-row.hover_bgcolor { background:#edf5fd;}
+.slick-cell { line-height:30px; padding-left:8px;}
+
+.slick-cell-action { text-align:center;}
+.slick-cell, .slick-headerrow-column { border:0;}
+.slick-cell.selected { background:#cbd3db;}

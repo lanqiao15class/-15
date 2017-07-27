@@ -1,0 +1,627 @@
+<!--班级详情弹框开始-->
+<div class="class-info-dialog dialog-box">
+	<div class="diaTitle">
+        <h2 class="dialog-tith2 clearfix">
+            <p class="fl">
+                <span class="tith2-span">张兰新</span>
+                <a class="icon-mark bg-blue" href="javascript:void(0)">
+                    <span class="mark-rel"><em class="mark-name">重点</em></span>
+                </a>
+                <a class="icon-mark bg-orange" href="javascript:void(0)">
+                    <span class="mark-rel"><em class="mark-name">我的</em></span>
+                </a>
+            </p>
+            <span class="c-red stu-status fr">报名待审核</span>
+        </h2>
+    </div>
+    <div class="contbox contbox-stuinfo">
+    	<div class="tabClick tabClick-stuinfo">
+        	<a class="curr" href="javascript:void(0)">基本信息</a>
+            <a href="javascript:void(0)">跟踪记录</a>
+            <a href="javascript:void(0)">班级状态流水</a>            
+        </div>
+        <!--切换内部部分开始-->
+        <div class="cbox-rel">
+            <div class="tabContant tabContant-stuinfo">
+                <div class="con-ggcbox" style="display:block;">
+                    <div class="stu-basic-info">
+                        <!--基本信息展示部分开始-->
+                        <div class="clearfix">
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">班级一级类型：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>3+2</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span">
+                                	<select>
+                                        <option>3+2</option>
+                                        <option>3+2</option>
+                                    </select>
+                                </span>
+                                <span class="error-tips">请输入姓名</span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">班级二级类型：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>北京基地就业</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span">
+                                    <select>
+                                        <option>北京基地就业</option>
+                                        <option>北京基地就业</option>
+                                    </select>
+                                </span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">课程类别：</i></label>
+                                <span class="read-span only-read"><em>JavaEE</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">拟开课日期：</i></label>
+                                <span class="read-span only-read"><em>2016-03-08</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">开课日期：</i></label>
+                                <span class="read-span only-read"><em>2016-03-08</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">拟校园结课日期：</i></label>
+                                <span class="read-span only-read"><em>1992.09.02</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">校园结课日期：</i></label>
+                                <span class="read-span only-read"><em>2016-03-08</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">拟结业日期：</i></label>
+                                <span class="read-span only-read"><em>1992.09.02</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">结业日期：</i></label>
+                                <span class="read-span only-read"><em>2016-03-08</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">开班人数：</i></label>
+                                <span class="read-span only-read"><em>50</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">当前人数：</i></label>
+                                <span class="read-span only-read"><em>50</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">技术老师：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>张技术</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span">
+                                	<span class="select-search-box">
+                                        <select class="teacher">
+                                            <option value="">技术老师</option>
+                                            <option value="张崇杰">张崇杰</option>
+                                            <option value="张崇杰">张崇杰</option>
+                                            <option value="张崇杰">张崇杰</option>
+                                            <option value="张崇杰">张崇杰</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">CEP老师：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>CEP老师</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span">
+                                	<span class="select-search-box">
+                                        <select class="teacher">
+                                            <option value="">cep老师</option>
+                                            <option value="cep老师">cep老师</option>
+                                            <option value="cep老师">cep老师</option>
+                                            <option value="cep老师">cep老师</option>
+                                            <option value="cep老师">cep老师</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon">*</i><i class="label-text">职业经纪人：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>张技术</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span">
+                                	<span class="select-search-box">
+                                        <select class="teacher">
+                                            <option value="">职业经济人</option>
+                                            <option value="王经济">王经济</option>
+                                            <option value="王经济">王经济</option>
+                                            <option value="王经济">王经济</option>
+                                            <option value="王经济">王经济</option>
+                                        </select>
+                                    </span>
+                                </span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">QQ群：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>1211485930</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span"><input disableautocomplete autocomplete="off" type="text"></span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">班长：</i></label>
+                                <a href="javascript:void(0);" class="read-span able-edit"><em>李XX</em><b class="icon-edit"><i class="Hui-iconfont">&#xe6df;</i></b></a>
+                                <span class="eidt-span"><input disableautocomplete autocomplete="off" type="text"></span>
+                                <span class="error-tips"></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">创建目的：</i></label>
+                                <span class="read-span only-read"><em>2016-8-30</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">创建时间：</i></label>
+                                <span class="read-span only-read"><em>2016-8-30</em></span>
+                            </div>
+                            <div class="line-item">
+                                <label class="left-label"><i class="must-input-icon"></i><i class="label-text">关闭时间：</i></label>
+                                <span class="read-span only-read"><em>2016-8-30</em></span>
+                            </div>
+                        </div>
+                        
+                        <!--基本信息展示部分结束-->
+                    </div>
+                </div>
+                <div class="con-ggcbox">
+                    <div class="stu-interview-info">
+                    	<!--访谈记录一条开始-->
+                        <div class="inter-recode">
+                        	<p class="clearfix">
+                            	<label class="inter-label">创建时间：</label><span class="bulid-people">2016-01-02 12:12:12</span>
+                            </p>
+                            <div class="rel-fangtan-con">
+                                <label class="label-blue-fangtan">内&#12288;&#12288;容：</label>
+                                <span class="aim-talk">下周三集体面试，面试地点：校园活动中心，面试时间：下周三下午13:00-14:00，请组织班级学员按时到场，thanks。</span>
+                            </div>
+                            <p class="clearfix">
+                            	<label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                <label class="inter-label">所在部门：</label><span class="bulid-people">教学部</span>
+                            </p>
+                        </div>
+                        <!--访谈记录一条结束-->
+                        <div class="inter-recode">
+                        	<p class="clearfix">
+                            	<label class="inter-label">创建时间：</label><span class="bulid-people">2016-01-02 12:12:12</span>
+                            </p>
+                            <div class="rel-fangtan-con">
+                                <label class="label-blue-fangtan">内&#12288;&#12288;容：</label>
+                                <span class="aim-talk">下周三集体面试，面试地点：校园活动中心，面试时间：下周三下午13:00-14:00，请组织班级学员按时到场，thanks。</span>
+                            </div>
+                            <p class="clearfix">
+                            	<label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                <label class="inter-label">所在部门：</label><span class="bulid-people">教学部</span>
+                            </p>
+                        </div>
+                        <div class="inter-recode">
+                        	<p class="clearfix">
+                            	<label class="inter-label">创建时间：</label><span class="bulid-people">2016-01-02 12:12:12</span>
+                            </p>
+                            <div class="rel-fangtan-con">
+                                <label class="label-blue-fangtan">内&#12288;&#12288;容：</label>
+                                <span class="aim-talk">下周三集体面试，面试地点：校园活动中心，面试时间：下周三下午13:00-14:00，请组织班级学员按时到场，thanks。</span>
+                            </div>
+                            <p class="clearfix">
+                            	<label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                <label class="inter-label">所在部门：</label><span class="bulid-people">教学部</span>
+                            </p>
+                        </div>
+                        <!--<div class="inter-recode">
+                        	<h3 class="inter-tit clearfix">
+                            	<span class="int-title fl">访谈纪要</span>
+                                <p class="fr">
+                                	<span class="inter-addr"><i class="Hui-iconfont icon-addr">&#xe6c9;</i><em>深圳大学</em></span>
+                                    <span class="inter-time"><i class="Hui-iconfont icon-time">&#xe690;</i><em>2016.09.21</em></span>
+                                </p>
+                            </h3>
+                            <div class="inter-contant">
+                            	<p>课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</p>
+                            </div>
+                            <p class="clearfix">
+                            	<label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                <label class="inter-label">创建时间：</label><span class="bulid-time">2016-01-01 12:12:12</span>
+                            </p>
+                        </div>-->
+                        
+                        <!--访谈记录查看更多开始-->
+                        <div class="more-list-disply">
+                            <div class="inter-recode">
+                                <p class="clearfix">
+                                    <label class="inter-label">创建时间：</label><span class="bulid-people">2016-01-02 12:12:12</span>
+                                </p>
+                                <div class="rel-fangtan-con">
+                                    <label class="label-blue-fangtan">内&#12288;&#12288;容：</label>
+                                    <span class="aim-talk">下周三集体面试，面试地点：校园活动中心，面试时间：下周三下午13:00-14:00，请组织班级学员按时到场，thanks。</span>
+                                </div>
+                                <p class="clearfix">
+                                    <label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                    <label class="inter-label">所在部门：</label><span class="bulid-people">教学部</span>
+                                </p>
+                            </div>
+                            <div class="inter-recode">
+                                <p class="clearfix">
+                                    <label class="inter-label">创建时间：</label><span class="bulid-people">2016-01-02 12:12:12</span>
+                                </p>
+                                <div class="rel-fangtan-con">
+                                    <label class="label-blue-fangtan">内&#12288;&#12288;容：</label>
+                                    <span class="aim-talk">下周三集体面试，面试地点：校园活动中心，面试时间：下周三下午13:00-14:00，请组织班级学员按时到场，thanks。</span>
+                                </div>
+                                <p class="clearfix">
+                                    <label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                    <label class="inter-label">所在部门：</label><span class="bulid-people">教学部</span>
+                                </p>
+                            </div>
+                            <!--<div class="inter-recode">
+                                <h3 class="inter-tit clearfix">
+                                    <span class="int-title fl">访谈纪要</span>
+                                    <p class="fr">
+                                        <span class="inter-addr"><i class="Hui-iconfont icon-addr">&#xe6c9;</i><em>深圳大学</em></span>
+                                        <span class="inter-time"><i class="Hui-iconfont icon-time">&#xe690;</i><em>2016.09.21</em></span>
+                                    </p>
+                                </h3>
+                                <div class="inter-contant">
+                                    <p>课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</p>
+                                </div>
+                                <p class="clearfix">
+                                    <label class="inter-label">创建人：</label><span class="bulid-people">谢胜莲</span>
+                                    <label class="inter-label">创建时间：</label><span class="bulid-time">2016-01-01 12:12:12</span>
+                                </p>
+                            </div>-->
+                        </div>
+                        <!--访谈记录查看更多结束-->
+                        <div class="center mb20">
+                        	<a class="sl-down-btn" href="javascript:void(0);">查看更多</a><a class="sl-up-btn" href="javascript:void(0);">收起</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="con-ggcbox">
+                    <div class="stu-interview-info">
+                    	<!--学员状态流水一条开始-->
+                        <div class="inter-recode">
+                        	<p class="clearfix">
+                            	<label class="inter-label">状态：</label><span class="bulid-people">授课中</span>
+                            </p>
+                            <p class="clearfix">
+                            	<label class="inter-label">状态发生时间：</label><span class="bulid-people">2016-01-01</span>
+                            </p>
+                            <p class="clearfix">
+                            	<label class="inter-label">已完成课时数量：</label><span class="bulid-people">700课时</span>
+                            </p>
+                        	<div class="rel-fangtan-con">
+                                <label class="label-blue-fangtan">备&#12288;&#12288;注：</label>
+                                <span class="aim-talk">课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</span>
+                            </div>
+                        </div>
+                        <!--学员状态流水一条结束-->
+                        <div class="inter-recode">
+                        	<p class="clearfix">
+                            	<label class="inter-label">状态：</label><span class="bulid-people">未开课</span>
+                            </p>
+                            <p class="clearfix">
+                            	<label class="inter-label">状态发生时间：</label><span class="bulid-people">2016-01-01</span>
+                            </p>
+                            <p class="clearfix">
+                            	<label class="inter-label">状态结束时间：</label><span class="bulid-people">2016-01-01</span>
+                            </p>
+                            <p class="clearfix">
+                            	<label class="inter-label">已完成课时数量：</label><span class="bulid-people">700课时</span>
+                            </p>
+                        	<div class="rel-fangtan-con">
+                                <label class="label-blue-fangtan">备&#12288;&#12288;注：</label>
+                                <span class="aim-talk">课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</span>
+                            </div>
+                            <p class="clearfix"><label class="inter-label">创建时间：</label><span class="bulid-time">2016-01-01 12:12:12</span></p>
+                        </div>
+                        
+                        <!--访谈记录查看更多开始-->
+                        <div class="more-list-disply">
+                            <div class="inter-recode">
+                                <p class="clearfix">
+                                    <label class="inter-label">状态：</label><span class="bulid-people">未开课</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">状态发生时间：</label><span class="bulid-people">2016-01-01</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">状态结束时间：</label><span class="bulid-people">2016-01-01</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">已完成课时数量：</label><span class="bulid-people">700课时</span>
+                                </p>
+                                <div class="rel-fangtan-con">
+                                    <label class="label-blue-fangtan">备&#12288;&#12288;注：</label>
+                                    <span class="aim-talk">课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</span>
+                                </div>
+                                <p class="clearfix"><label class="inter-label">创建时间：</label><span class="bulid-time">2016-01-01 12:12:12</span></p>
+                            </div>    
+                            <div class="inter-recode">
+                                <p class="clearfix">
+                                    <label class="inter-label">状态：</label><span class="bulid-people">未开课</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">状态发生时间：</label><span class="bulid-people">2016-01-01</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">状态结束时间：</label><span class="bulid-people">2016-01-01</span>
+                                </p>
+                                <p class="clearfix">
+                                    <label class="inter-label">已完成课时数量：</label><span class="bulid-people">700课时</span>
+                                </p>
+                                <div class="rel-fangtan-con">
+                                    <label class="label-blue-fangtan">备&#12288;&#12288;注：</label>
+                                    <span class="aim-talk">课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。课程内容很实用，教学老师很用心，期待实践机会。</span>
+                                </div>
+                                <p class="clearfix"><label class="inter-label">创建时间：</label><span class="bulid-time">2016-01-01 12:12:12</span></p>
+                            </div>
+                        </div>
+                        <!--访谈记录查看更多结束-->
+                        <div class="center mb20">
+                        	<a class="sl-down-btn" href="javascript:void(0);">查看更多</a><a class="sl-up-btn" href="javascript:void(0);">收起</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--切换内部部分结束-->
+    </div>
+</div>
+<!--班级详情弹框结束-->
+
+<!--添加访谈记录开始-->
+<div class="add-inter-recode mt20">
+	<div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label fl"><i class="must-input-icon">*</i><i class="label-text">访谈对象：</i></label>
+            <div class="ftr-box fl">
+            	<div class="add-stu-box"><a href="javascript:void(0);" class="oneObj-box"><span class="one-people-name">王雷艳</span><i class="del-btn-icon">╳</i></a></div>
+            	<span class="add-btn-box">
+                	<a href="javascript:void(0);" class="add-btn"><i class="Hui-iconfont">&#xe600;</i><span class="ml10">添加</span></a>
+                    <span class="select-fangtan-people">
+                        <span class="select-search-box">
+                            <select class="scoolname11">
+                                <option value="">学生姓名</option>
+                                <option value="王五">王五</option>
+                                <option value="张二">张二</option>
+                                <option value="李大">李大</option>
+                                <option value="朱洙">朱洙</option>
+                            </select>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <span class="error-tips">请输入访谈日期</span>
+    </div>
+	<div class="line-item-ver c-gray">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">访谈对象所在院校：</i></label>
+            <span class="people-school-box">
+            	<i class="peo-sname">湖北工业学院</i>
+                <i class="peo-sname">湖北工业学院</i>
+                <i class="peo-sname">湖北工业学院</i>
+            </span>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="line-item-ver c-gray">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">访谈人：</i></label>
+            <span class="fangtan-person">五老师</span>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="line-item-ver c-gray">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">访谈人所在部门：</i></label>
+            <span class="fangtan-person">教学部</span>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">访谈日期：</i></label>
+            <input placeholder="请输入访谈日期" disableautocomplete autocomplete="off" type="text">
+        </div>
+        <span class="error-tips">请输入访谈日期</span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">访谈目的：</i></label>
+            <textarea class="fang-tan-aim" placeholder="请输入访谈记录"></textarea>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">谈话纪要：</i></label>
+            <textarea class="fang-tan-record" placeholder="请输入访谈记录"></textarea>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="center mb20">
+    	<button class="btn btn-blue mr10">保存</button>
+        <button class="btn btn-wihte">返回</button>
+    </div>
+</div>
+<!--添加访谈记录结束-->
+
+<!--设置班级状态开始-->
+<div class="set-class-status mt20">
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">班级状态：</i></label>
+            <select>
+            	<option>在读</option>
+                <option class="dischoose" disabled>已就业</option>
+            </select>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">状态发生时间：</i></label>
+            <input placeholder="请输入开除时间" readonly disableautocomplete autocomplete="off" type="text">
+        </div>
+        <span class="error-tips">请输入开除时间</span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">已完成课时数量：</i></label>
+            <input placeholder="请输入已完成课时数量" disableautocomplete autocomplete="off" type="text">
+        </div>
+        <span class="error-tips">请输入已完成课时数量</span>
+    </div>
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">备&#12288;&#12288;注：</i></label>
+            <textarea class="status-appendix" placeholder="请输入访谈记录"></textarea>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="center mb20">
+    	<button class="btn btn-blue mr10">保存</button>
+        <button class="btn btn-wihte">返回</button>
+    </div>
+</div>
+<!--设置班级状态结束-->
+
+<!--新建班级开始-->
+<div class="create-new-class">
+	<form class="clearfix">
+        <div class="form-scroll">
+            <div class="form-scroll-auto">
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">创建目的：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">班级名称：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">班级类型：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">课程类别：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">拟开课日期：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">拟校园结课日期：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">拟结业日期：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">开班人数：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">技术老师：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">cep老师：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips"></span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">职业经纪人：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips">请输入学员姓名</span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">QQ群：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips">请输入学员姓名</span>
+                </div>
+                <div class="line-item-ver">
+                    <div class="clearfix">
+                        <label class="align-right-label"><i class="must-input-icon"></i><i class="label-text">班长：</i></label>
+                        <input class="val-info" placeholder="" disableautocomplete="" autocomplete="off" type="text">
+                    </div>
+                    <span class="error-tips">请输入学员姓名</span>
+                </div>
+            </div>
+        </div>
+        <div class="center fix-btn-box">
+            <button class="btn btn-blue mr10">保存</button>
+            <button class="btn btn-wihte">返回</button>
+        </div>
+    </form>
+</div>
+<!--新建班级结束-->
+
+<!--创建班级记录弹框开始-->
+<div class="create-class-record mt20">
+    <div class="line-item-ver">
+    	<div class="clearfix">
+            <label class="align-right-label"><i class="must-input-icon">*</i><i class="label-text">备&#12288;&#12288;注：</i></label>
+            <textarea class="class-record" placeholder="请输入访谈记录"></textarea>
+        </div>
+        <span class="error-tips"></span>
+    </div>
+    <div class="center mb20">
+    	<button class="btn btn-blue mr10">保存</button>
+        <button class="btn btn-wihte">返回</button>
+    </div>
+</div>
+<!--创建班级记录弹框结束-->
+
+<!--班级学员列表弹框开始-->
+<div class="the-classof-student">
+	<div class="classof-student-rel">
+    	<div class="diaTitle">
+            <h2 class="dialog-tith2 clearfix">
+                <p class="fl">
+                    <span class="tith2-span">蓝桥1班<i class="c-red class-status">授课中</i></span>
+                </p>
+            </h2>
+        </div>
+        <div class="classof-opt-part"><a class="c-blue" href="javascript:void(0);">学员转班</a><span class="fr">开班人数35人，当前人数34人</span></div>
+        <div class="class-table-student">
+        	<div class="class-of-stuTable" id="myTable"></div>
+        </div>
+    </div>
+</div>
+<!--班级学员列表弹框结束-->
+<script src="../../static/js/effect.js"></script>
+<script src="../../static/js/class-of-stutable.js"></script>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TStudentSignMapper">
+    <select id="selectCurrentCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT count(0)
+        FROM t_student_sign t
+        WHERE t.ca_id = #{param} AND t.type = 3
+    </select>
+</mapper>

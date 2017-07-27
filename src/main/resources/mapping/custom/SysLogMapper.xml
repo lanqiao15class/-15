@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.SysLogMapper">
+  <select id="selectlogbyTable"  resultType="map" parameterType="map">
+  select *  from  ${table}
+  
+  </select>
+    <select id="getLogPage"  resultType="map" parameterType="map">
+  select sys_log.optype, sys_log.create_date,sys_log.content,sys_log.old_data,t_user.real_name,t_user.type  from sys_log  left  join   t_user  on t_user.user_id=sys_log.user_id  where  1=1  
+<if test="userid!=null  and userid!=''">
+  and  sys_log.user_id= ${userid} and  sys_log.optype!=5
+  </if>
+  <if test="optype!=null  and optype!=''">
+ 	and  sys_log.optype=#{optype}
+  </if>
+  <if test="parm!=null  and parm!=''">
+  ${parm} 
+  </if>
+  <if test="parm1!=null  and parm1!=''">
+  ${parm1} 
+  </if>
+    order by  sys_log.create_date desc  limit  #{currpage},#{pageSize} 
+  
+  </select>
+   <select id="getLogCount"  resultType="int" parameterType="map">
+   select  count(logid)  from sys_log  left  join   t_user  on t_user.user_id=sys_log.user_id  where  1=1  
+  <if test="userid!=null  and userid!=''">
+  and  sys_log.user_id= ${userid} and  sys_log.optype!=5
+  </if>
+  <if test="optype!=null  and optype!=''">
+ 	and  sys_log.optype=#{optype}
+  </if>
+  <if test="parm!=null  and parm!=''">
+  ${parm} 
+  </if>
+  <if test="parm1!=null  and parm1!=''">
+  ${parm1} 
+  </if>  
+  
+  </select>
+</mapper>

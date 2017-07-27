@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.StudentMapper">
+     <!-- 公用代码： 学生审核状态和状态，用于抬头的提示《去报名》 -->
+	 <select id="statusForHead" parameterType="int" resultType="map">
+	 	select status as stuStatus,audit_status as auditStatus from t_student where user_id = #{userId}
+	 </select>
+	 <!-- =========查询意向学员开始 ========-->
+	 <sql id="yxBaseWhere">
+	 	where ts.`status` in(${statusParam})<!-- 学员状态:待审核 -->
+	 </sql>
+	 <sql id="yxBaseSql">
+	    ts.user_id as stuUserId,
+	    sc.univ_name as schoolName,	
+	    ts.grade,
+	    ts.major,
+        ts.school_subname as  schoolSubname,
+	    ts.`status`,
+        ts.update_time as updateTime,
+		tu.real_name as realName,
+		tu.tel,
+		tg.data_id as dataId,
+		ts.audit_status as auditStatus
+	 </sql>
+	 <sql id="yxQuerySql">
+	 <if test="select_school_name_lq !=null">
+	 	and sc.univ_code=#{select_school_name_lq,jdbcType=INTEGER}
+	 </if>
+	 <if test="school_sub_name_lq !=null">
+		 and ts.school_subname like CONCAT('%',#{school_sub_name_lq,jdbcType=VARCHAR},'%')
+	 </if>
+	 <if test="student_name_lq !=null">
+	 	and tu.real_name like CONCAT('%',#{student_name_lq,jdbcType=VARCHAR},'%')
+	 </if>
+	 <if test="stuStatus_lq !=null">
+	 	and ts.`status`=#{stuStatus_lq,jdbcType=CHAR}
+	 </if>
+	 <if test="grade_lq !=null">
+	 	and ts.grade like CONCAT('%',#{grade_lq,jdbcType=VARCHAR},'%')
+	 </if>
+	 </sql>
+	 <!-- 查询意向学员列表(我关注的) -->
+	 <select id="selectMyFocusYxStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	    select
+          <include refid="yxBaseSql"></include>
+	    from t_student ts 
+        LEFT JOIN lq_universities sc ON ts.univ_code=sc.univ_code 
+		LEFT JOIN t_user tu ON ts.user_id=tu.user_id
+		LEFT JOIN t_data_tag tg  on ts.user_id=tg.data_id
+	    <include refid="yxBaseWhere"></include>
+		and  tg.userid=#{teaUserId,jdbcType=INTEGER} and tg.datatype=3 and tg.tagtype=1
+		<include refid="yxQuerySql"></include>
+      order by ts.audit_status,ts.update_time desc
+	 <if test="currpage !=null">
+	 	limit #{currpage},#{pageSize}</if>
+	 </select>
+	 
+	 <select id="getMyFocusYxStuCount" parameterType="java.util.Map" resultType="Integer">
+	  select
+	    count(1)
+	   from t_student ts
+	    LEFT JOIN lq_universities sc ON ts.univ_code=sc.univ_code 
+		LEFT JOIN t_user tu ON ts.user_id=tu.user_id
+		LEFT JOIN t_data_tag tg  on ts.user_id=tg.data_id
+		 <include refid="yxBaseWhere"></include>
+		and  tg.userid=#{teaUserId,jdbcType=INTEGER} and tg.datatype=3 and tg.tagtype=1
+	   <include refid="yxQuerySql"></include>
+	 </select>
+	 
+	 <select id="selectAllYxStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	    select
+	     <include refid="yxBaseSql"></include>
+	     from t_student ts
+	    LEFT JOIN lq_universities sc ON ts.univ_code=sc.univ_code 
+		LEFT JOIN t_user tu ON ts.user_id=tu.user_id
+		LEFT JOIN t_data_tag tg  on (ts.user_id=tg.data_id and tg.userid=#{teaUserId,jdbcType=INTEGER} and tg.datatype=3 and tg.tagtype=1)
+		 <include refid="yxBaseWhere"></include>
+		<include refid="yxQuerySql"></include>
+		order by ts.audit_status,ts.update_time desc
+		<if test="currpage !=null">
+	 	limit #{currpage},#{pageSize}</if>
+	 </select>
+	 
+	 <select id="getAllYxStuCount" parameterType="java.util.Map" resultType="Integer">
+	   select
+	    	count(1)
+	   from 
+	   		t_student ts
+       LEFT JOIN lq_universities sc ON ts.univ_code=sc.univ_code 
+	   LEFT JOIN t_user tu ON ts.user_id=tu.user_id
+	   LEFT JOIN t_data_tag tg  on (ts.user_id=tg.data_id and tg.userid=#{teaUserId,jdbcType=INTEGER} and tg.datatype=3 and tg.tagtype=1)
+	    <include refid="yxBaseWhere"></include>
+		<include refid="yxQuerySql"></include>
+	 </select>
+	  <!-- =========查询意向学员结束=======-->
+	  
+	  <!-- =========查询未分班学员列表开始======== -->
+	  	 <sql id="noClassStuBaseSql">
+	   		ts.user_id as stuUserId,
+       		ts.stu_no as stuNo,
+	   		tu.real_name as realName,
+			ts.course_type as courseType,
+			uv.univ_name as schoolName,
+			ts.grade,
+			ts.`status`,
+			teu.real_name as recruitManager,
+			ts.update_time as updateTime,
+			tg.data_id as dataId
+	 </sql>
+	 <sql id="noClassBaseJoin">
+	    LEFT JOIN t_user tu on ts.user_id=tu.user_id
+		LEFT JOIN lq_universities uv on ts.univ_code =uv.univ_code
+		LEFT JOIN t_user teu on ts.inv_teacher_id=teu.user_id
+	 </sql>
+	 <sql id="noClassBaseWhere">
+	 where ts.`status`=#{statusParam} and ts.audit_status=#{auditStatus}
+	 </sql>
+	 <sql id="noClassBaseQuery">
+		 <if test="select_school_name_lq !=null">
+		 and uv.univ_code=#{select_school_name_lq,jdbcType=INTEGER}
+		 </if>
+		 <if test="courseType_lq !=null">
+		 and ts.course_type=#{courseType_lq,jdbcType=CHAR}
+		 </if>
+		 <if test="regional_director_name !=null">
+		 and ts.teacherid_inspector=#{regional_director_name,jdbcType=INTEGER}
+		 </if>
+		 <if test="recruit_manager_name !=null">
+		 and ts.inv_teacher_id=#{recruit_manager_name,jdbcType=INTEGER}
+		 </if>
+		 <if test="course_advisor_name !=null">
+		 and ts.teacherid_advisor=#{course_advisor_name,jdbcType=INTEGER}
+		 </if>
+		 <if test="student_name_lq !=null">
+	     and tu.real_name like concat('%',#{student_name_lq,jdbcType=VARCHAR},'%')
+		 </if>
+	 </sql>
+	 <!-- 我关注的未分班学员列表 -->
+	 <select id="selectMyFocusNoClassStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	 SELECT
+     <include refid="noClassStuBaseSql"></include>
+    from t_student ts
+     <include refid="noClassBaseJoin"></include>
+     LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	<include refid="noClassBaseWhere"></include>
+	and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	<include refid="noClassBaseQuery"></include>
+	order by ts.update_time desc
+	limit #{currpage},#{pageSize}
+	 </select>
+	 <!-- 我关注的未分班学员记录数 -->
+	 <select id="getMyFocusNoClassStuCount" parameterType="java.util.Map" resultType="Integer">
+	 select
+	  count(1)
+	 from t_student ts
+	 <include refid="noClassBaseJoin"></include>
+	 LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	 <include refid="noClassBaseWhere"></include>
+	 and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	 <include refid="noClassBaseQuery"></include>
+	 </select>
+	 
+	 <!-- 全部未分班学员列表 -->
+	 <select id="selectAllNoClassStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	 select
+	   <include refid="noClassStuBaseSql"></include>
+     from t_student ts
+       <include refid="noClassBaseJoin"></include>
+	 LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	 <include refid="noClassBaseWhere"></include>
+	 <include refid="noClassBaseQuery"></include>
+	 order by ts.update_time desc
+	 limit #{currpage},#{pageSize}
+	 </select>
+	 <!-- 全部未分班学员记录数 -->
+	 <select id="getAllNoClassStuCount" parameterType="java.util.Map" resultType="Integer">
+	 select
+	  count(1)
+	 from t_student ts
+	 <include refid="noClassBaseJoin"></include>
+	 LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	 <include refid="noClassBaseWhere"></include>
+	 <include refid="noClassBaseQuery"></include>
+	 </select>
+	  <!-- =========查询未分班学员列表结束========-->
+	  
+	  <!-- 按ids查询学员列表 -->
+	  <select id="getStudentByIds" parameterType="java.util.List" resultType="java.util.Map">
+	  SELECT uStu.real_name as realName,uInv.real_name as invTeacherName , un.univ_name as univName ,
+	  c.class_name  as className,  d.label as courseType,s.`status`,s.major,s.user_id userId
+	   from 	t_student s
+	  left JOIN t_user uStu on (uStu.user_id = s.user_id)
+	  left JOIN t_user  uInv on (uInv.user_id=s.inv_teacher_id)
+	  left JOIN lq_universities un  on (un.univ_code=s.univ_code)
+	  left JOIN t_lqclass c  on (c.lq_class_id=s.lq_class_id)
+	  LEFT JOIN  sys_dict d on (d.value=s.course_type and d.type='lq_courseType')
+	  where 
+			s.user_id in
+	  		<foreach collection="list" index="item" item="item" open="(" separator="," close=")"> 
+	        	#{item}  
+	   		</foreach> 
+  	  </select>
+	  
+	  
+	  <!-- ========查询正式学员列表开始=========== -->
+	  <sql id="zsStuBaseSql">
+	   	 ts.user_id as stuUserId,
+		 ts.stu_no as stuNo,
+		 tu.real_name as realName,
+		 tl.class_name as className,
+		 ts.course_type as courseType,
+		 uv.univ_name as schoolName,
+		 ts.school_type_code as schoolTypeCode,
+		 ts.`status`,
+		 ts.is_avaiable as isAvaiable,
+		 ts.has_paid as hasPaid,
+		 ts.update_time as updateTime
+	  </sql>
+	  <sql id="zsStuBaseJoin">
+	    LEFT JOIN t_user tu on ts.user_id=tu.user_id
+		LEFT JOIN t_lqclass tl on ts.lq_class_id=tl.lq_class_id
+		LEFT JOIN lq_universities uv on ts.univ_code=uv.univ_code
+	  </sql>
+	  <sql id="zsStuBaseWhere">
+	   where ts.`status` in (${stuStatusParam}) and ts.audit_status=#{auditStatusParam}
+	  </sql>
+	  <sql id="zsStuBasePage">
+	  order by ts.`status`,ts.update_time desc
+	  limit #{currpage},#{pageSize}
+	  </sql>
+	  <sql id="zsStuBaseQuery">
+	  <if test="select_school_name_lq !=null">
+	    and uv.univ_code=#{select_school_name_lq,jdbcType=INTEGER}
+	  </if>
+	  <if test="select_class_name_lq !=null">
+	    and tl.lq_class_id=#{select_class_name_lq,jdbcType=INTEGER}
+	  </if>
+	  <if test="stuStatus_lq !=null">
+	    and ts.`status`=#{stuStatus_lq,jdbcType=INTEGER}
+	  </if>
+	  <if test="isAvaiable_lq !=null">
+	   and ts.is_avaiable=#{isAvaiable_lq,jdbcType=INTEGER}
+	  </if>
+	  <if test="hasPaid_lq !=null">
+	   and ts.has_paid=#{hasPaid_lq,jdbcType=INTEGER}
+	  </if>
+	  <if test="regional_director_name !=null">
+		 and ts.teacherid_inspector=#{regional_director_name,jdbcType=INTEGER}
+	   </if>
+	   <if test="recruit_manager_name !=null">
+		 and ts.inv_teacher_id=#{recruit_manager_name,jdbcType=INTEGER}
+	   </if>
+	   <if test="course_advisor_name !=null">
+		 and ts.teacherid_advisor=#{course_advisor_name,jdbcType=INTEGER}
+	   </if>
+	   <if test="student_name_lq !=null">
+	     and tu.real_name like concat('%',#{student_name_lq,jdbcType=VARCHAR},'%')
+	   </if>
+	   <if test="beginTime_lq !=null and endTime_lq !=null">
+	     and ts.create_time BETWEEN #{beginTime_lq} AND #{endTime_lq}
+	   </if>
+	  </sql>
+	  <!-- 我关注的正式学员列表 -->
+	  <select id="selectMyFocusZsStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	  select
+	   <include refid="zsStuBaseSql"></include>,tg.data_id as dataId
+	  from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	  LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	   <include refid="zsStuBaseWhere"></include>
+	  and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	  <include refid="zsStuBaseQuery"></include>
+	  <include refid="zsStuBasePage"></include>
+	  </select>
+	  <!-- 我关注的正式学员记录数 -->
+	  <select id="getMyFocusZsStuCount" parameterType="java.util.Map" resultType="Integer">
+	  select 
+	    count(1)
+	  from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	  LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	  <include refid="zsStuBaseWhere"></include>
+	  and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	  <include refid="zsStuBaseQuery"></include>
+	  </select>
+	  <!-- 全部正式学员列表 -->
+	  <select id="selectAllZsStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	  select
+	   <include refid="zsStuBaseSql"></include>,tg.data_id as dataId
+	  from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	   LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	   <include refid="zsStuBasePage"></include>
+	  </select>
+	  
+	  <!-- 全部正式学员记录数 -->
+	  <select id="getAllZsStuCount" parameterType="java.util.Map" resultType="Integer">
+	  select 
+	    count(1)
+	  from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	   LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	  </select>
+	  <!-- 我管理的正式学员列表 -->
+	  <select id="selectMyManageZsStuList" parameterType="java.util.Map" resultType="java.util.Map">
+	   select
+	    <include refid="zsStuBaseSql"></include>,tg.data_id as dataId
+	    from t_student ts
+	   <include refid="zsStuBaseJoin"></include> 
+	    LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	   and (
+	        ts.teacherid_inspector=#{teaUserId}
+	     or ts.teacherid_advisor=#{teaUserId} 
+	     or ts.inv_teacher_id=#{teaUserId}
+	     or tl.com_teacher_id=#{teaUserId} 
+	     or tl.cep_teacher_id=#{teaUserId}
+	     or tl.chr_teacher_id=#{teaUserId}
+	       )
+	    <include refid="zsStuBasePage"></include>
+	  </select>
+	  <!-- 我管理的正式学员记录数 -->
+	  <select id="getMyManageZsStuCount" parameterType="java.util.Map" resultType="Integer">
+	  select 
+	    count(1)
+	   from t_student ts
+	   <include refid="zsStuBaseJoin"></include> 
+	    LEFT JOIN t_data_tag tg on (ts.user_id=tg.data_id and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1)
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	   and (
+	        ts.teacherid_inspector=#{teaUserId}
+	     or ts.teacherid_advisor=#{teaUserId} 
+	     or ts.inv_teacher_id=#{teaUserId}
+	     or tl.com_teacher_id=#{teaUserId} 
+	     or tl.cep_teacher_id=#{teaUserId}
+	     or tl.chr_teacher_id=#{teaUserId}
+	       )
+	  </select>
+	  <!-- ========查询正式学员列表结束=========== -->
+	  
+	  
+<!-- ================统计当前年份已就业/在职/离职/求职中/开除/劝退/退学/延期结业/延期就业/休学重返/休学人数开始============= -->
+<!-- 已就业/求职中/开除/劝退/退学/延期结业/延期就业/休学重返/休学人数 -->
+<select id="getStuCount" parameterType="java.util.Map" resultType="Integer">
+select 
+count(1)
+from t_student ts
+where ts.`status`=#{stuStatus} and YEAR(ts.create_time)=YEAR(now())
+</select>
+<!-- 离职/在职人数 -->
+<select id="getInOrOutWorkCount" parameterType="java.util.Map" resultType="Integer">
+select 
+count(1)
+from t_student ts
+where ts.jobstatus=#{jobstatus} and YEAR(ts.create_time)=YEAR(now())
+</select>
+<!-- ================统计当前年份已就业/在职/离职/求职中/开除/劝退/退学/延期结业/延期就业/休学重返/休学人数结束============= -->
+
+<!-- 	   新分班关注的学员导出 -->
+<select id="selectMyFocusNoClassExport" parameterType="java.util.Map" resultType="java.util.Map">
+	 SELECT ts.user_id,
+			ts.stu_no as stuNo,tu.real_name as realName,tu.id_card as idCard,
+			uv.univ_name as univName,
+			ts.teacherid_inspector ,ts.inv_teacher_id , ts.teacherid_advisor
+    from t_student ts
+     <include refid="noClassBaseJoin"></include>
+     LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	<include refid="noClassBaseWhere"></include>
+	and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	<include refid="noClassBaseQuery"></include>
+	order by ts.update_time desc
+</select>
+	 
+ <!-- 全部未分班学员列表excel导出 -->
+<select id="selectAllNoClassExport" parameterType="java.util.Map" resultType="java.util.Map">
+	 select
+	  	ts.user_id,
+			ts.stu_no as stuNo,tu.real_name as realName,tu.id_card as idCard,
+			uv.univ_name as univName,
+			ts.teacherid_inspector ,ts.inv_teacher_id , ts.teacherid_advisor
+     from t_student ts
+     <include refid="noClassBaseJoin"></include>
+	 <include refid="noClassBaseWhere"></include>
+	 <include refid="noClassBaseQuery"></include>
+	 order by ts.update_time desc
+	
+</select>
+
+	 
+	<!-- 导出全部学生信息 -->
+	<select id="getAllStuExportList" parameterType="map" resultType="map">
+	    select ts.user_id,
+			ts.stu_no as stuNo,tu.real_name as realName,tu.id_card as idCard,
+			uv.univ_name as univName,
+			ts.teacherid_inspector ,ts.inv_teacher_id , ts.teacherid_advisor
+	  	from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	     order by ts.update_time desc
+	</select>
+	
+	<!-- 导出我管理的学生列表 -->
+	<select id="getMyManagedStuExportList" parameterType="map" resultType="map">
+ 	    select ts.user_id,
+			ts.stu_no as stuNo,tu.real_name as realName,tu.id_card as idCard,
+			uv.univ_name as univName,
+			ts.teacherid_inspector ,ts.inv_teacher_id , ts.teacherid_advisor
+	    from t_student ts
+	   <include refid="zsStuBaseJoin"></include> 
+	   <include refid="zsStuBaseWhere"></include>
+	   <include refid="zsStuBaseQuery"></include>
+	   and (
+	        ts.teacherid_inspector=#{teaUserId}
+	     	or ts.teacherid_advisor=#{teaUserId} 
+	     	or ts.inv_teacher_id=#{teaUserId}
+	     	or tl.com_teacher_id=#{teaUserId} 
+	     	or tl.cep_teacher_id=#{teaUserId}
+	     	or tl.chr_teacher_id=#{teaUserId}
+	       )
+	      order by ts.update_time desc
+	</select>
+	
+	<!-- 导出我关注的学生列表 -->
+	<select id="getMyFocusStuExportList" parameterType="map" resultType="map">
+	  select ts.user_id,
+			ts.stu_no as stuNo,tu.real_name as realName,tu.id_card as idCard,
+			uv.univ_name as univName,
+			ts.teacherid_inspector ,ts.inv_teacher_id , ts.teacherid_advisor
+	  from t_student ts
+	   <include refid="zsStuBaseJoin"></include>
+	  LEFT JOIN t_data_tag tg on ts.user_id=tg.data_id
+	   <include refid="zsStuBaseWhere"></include>
+	  and tg.userid=#{teaUserId} and tg.datatype=3 and tg.tagtype=1
+	  <include refid="zsStuBaseQuery"></include>
+	  order by ts.update_time desc
+	  
+</select>
+
+<!-- 	  报表导出部分使用, 获取学生的其他报名费用信息 -->
+<select id="getExportMoneyData" parameterType="int" resultType="map">
+  select  a.is_avaiable ,b.standard_money - b.favour_money as shouldmoney, 
+ 	b.favour_money , b.current_pay_money, b.last_pay_time, c.agency_userid
+   from t_student a 
+	left JOIN t_income_log b on(a.user_id = b.user_id and b.pay_goal=1)
+   left JOIN t_student_receivable_log c on (c.receivable_userid = a.user_id and c.cost_type=1)
+	where  a.user_id=#{userid} limit 1
+	
+ </select>
+	
+	<!-- ==============学员就业管理列表开始============== -->
+<sql id="jobBaseSql">
+tu.user_id as stuUserId,
+ts.stu_no as stuNo,
+tu.real_name as realName,
+tl.class_name as className,
+ts.course_type as courseType,
+uv.univ_name as schoolName,
+ts.`status`,
+ts.jobstatus,
+ts.jobfromtype,
+ts.jobservice_starttime as jobSerStarTime,
+ts.emp_time as empTime,
+ts.update_time as updateTime
+</sql>
+<sql id="jobBaseJoin">
+LEFT JOIN t_user tu on ts.user_id=tu.user_id
+LEFT JOIN t_lqclass tl on ts.lq_class_id=tl.lq_class_id
+LEFT JOIN lq_universities uv on ts.univ_code=uv.univ_code
+</sql>
+<sql id="jobBaseWhere">
+where ts.`status` in (${stuStatusParam}) and ts.audit_status=#{auditStatusParam}
+</sql>
+<sql id="jobBasePage">
+order by ts.`status`,ts.update_time DESC
+limit #{currpage},#{pageSize}
+</sql>
+<sql id="jobBaseQuery">
+<if test="select_school_id !=null">
+and uv.univ_code=#{select_school_id,jdbcType=INTEGER}
+</if>
+<if test="select_class_name !=null">
+and tl.class_name like concat('%',#{select_class_name,jdbcType=VARCHAR},'%')
+</if>
+<if test="student_name_lq !=null">
+and tu.real_name like concat('%',#{student_name_lq,jdbcType=VARCHAR},'%')
+</if>
+<if test="jobStatus_lq !=null">
+and ts.jobstatus=#{jobStatus_lq,jdbcType=INTEGER}
+</if>
+<if test="jobWay_lq !=null">
+and ts.jobfromtype=#{jobWay_lq,jdbcType=INTEGER}
+</if>
+<if test="regional_director_userid !=null">
+and  ts.teacherid_inspector=#{regional_director_userid,jdbcType=INTEGER}
+</if>
+<if test="recruit_manager_userid !=null">
+and ts.inv_teacher_id=#{recruit_manager_userid,jdbcType=INTEGER}
+</if>
+<if test="course_advisor_userid !=null">
+and ts.teacherid_advisor=#{course_advisor_userid,jdbcType=INTEGER}
+</if>
+<if test="jSerBeginTime_lq !=null and jSerEndTime_lq !=null">
+ and ts.jobservice_starttime BETWEEN #{jSerBeginTime_lq} AND #{jSerEndTime_lq}
+</if>
+<if test="fJobBeginTime_lq !=null and fJobEndTime_lq !=null">
+ and ts.emp_time BETWEEN #{fJobBeginTime_lq} AND #{fJobEndTime_lq}
+</if>
+</sql>
+<sql id="jobMyManageBase">
+   and (
+	        ts.teacherid_inspector=#{teaUserId}
+	     or ts.teacherid_advisor=#{teaUserId} 
+	     or ts.inv_teacher_id=#{teaUserId}
+	     or tl.com_teacher_id=#{teaUserId} 
+	     or tl.cep_teacher_id=#{teaUserId}
+	     or tl.chr_teacher_id=#{teaUserId}
+	       )
+</sql>
+<!-- 我关注的就业学员列表 -->
+<select id="selectMyFocusStuJobList" parameterType="java.util.Map" resultType="java.util.Map">
+select
+	<include refid="jobBaseSql"></include>,tg.data_id as dataId
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on tg.data_id=ts.user_id
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobBaseQuery"></include>
+and tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId}
+	<include refid="jobBasePage"></include>
+</select>
+<!-- 我关注的就业学员记录数 -->
+<select id="getMyFocusStuJobCount" parameterType="java.util.Map" resultType="Integer">
+select
+	count(1)
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on tg.data_id=ts.user_id
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobBaseQuery"></include>
+and tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId}
+</select>
+<!-- 全部的就业学员列表 -->
+<select id="selectAllStuJobList" parameterType="java.util.Map" resultType="java.util.Map">
+select
+	<include refid="jobBaseSql"></include>,tg.data_id as dataId
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on (tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId} and tg.data_id=ts.user_id)
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobBaseQuery"></include>
+	<include refid="jobBasePage"></include>
+</select>
+<!-- 全部的就业学员记录数 -->
+<select id="getAllStuJobCount" parameterType="java.util.Map" resultType="Integer">
+select
+	count(1)
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on (tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId} and tg.data_id=ts.user_id)
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobBaseQuery"></include>
+</select>
+<!-- 我管理的就业学员列表 -->
+<select id="selectMyManageStuJobList" parameterType="java.util.Map" resultType="java.util.Map">
+select 
+	<include refid="jobBaseSql"></include>,tg.data_id as dataId
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on (tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId} and tg.data_id=ts.user_id)
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobMyManageBase"></include>
+	<include refid="jobBaseQuery"></include>
+	<include refid="jobBasePage"></include>
+</select>
+<!-- 我管理的就业学员列表 -->
+<select id="getMyManageStuJobCount" parameterType="java.util.Map" resultType="Integer">
+select
+	count(1)
+from t_student ts
+	<include refid="jobBaseJoin"></include>
+LEFT JOIN t_data_tag tg on (tg.datatype=3 and tg.tagtype=1 and tg.userid=#{teaUserId} and tg.data_id=ts.user_id)
+	<include refid="jobBaseWhere"></include>
+	<include refid="jobMyManageBase"></include>
+	<include refid="jobBaseQuery"></include>
+</select>
+<!-- ==============学员就业管理列表结束============== -->   
+</mapper>

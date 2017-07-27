@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TStudentStatusLogMapper">
+<!--   获取最近的一个状态变化记录 -->
+ <select id="selectPrevious_Log"  parameterType="map" resultMap="BaseResultMap">
+ select  *  from t_student_status_log 
+ 	where user_id=#{userid} order by inputtime desc limit 1
+ </select>
+ 
+  <!--  获取指定学员的状态列表 -->
+  <select id="getStuStatusLogByUserId" parameterType="java.lang.Integer" resultType="java.util.Map">
+  		select newstatus,inputtime,oldstatus,finish_count,remark,endt_time,backtime,begin_time
+		from t_student_status_log
+		where user_id=#{userId}
+		ORDER BY inputtime DESC
+  </select>
+ 
+</mapper>

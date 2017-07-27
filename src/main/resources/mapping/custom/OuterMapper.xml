@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.OuterMapper">
+	 
+  <!-- 查询学生信息 -->
+ <select id="getStuInfo" parameterType="int" resultType="map">
+  SELECT 
+  u.user_id id,u.real_name realName,u.sex,u.photo ,	u.birth,u.id_card idCard ,
+   uv.univ_name as university, ts.stu_no stuNo, ts.status schoolStatus,
+   u.tel,u.qq,u.email, ts.is_avaiable signpaycode , ts.has_paid studypaycode, lq.class_name className,lq.lq_class_id classid
+  from t_user u 
+  left JOIN t_student ts on (ts.user_id = u.user_id )
+  LEFT JOIN  lq_universities uv on (ts.univ_code = uv.univ_code)
+  LEFT JOIN  t_lqclass lq on (lq.lq_class_id= ts.lq_class_id )
+  where u.sso_userid=#{userid}  limit 1
+  </select>
+  
+  
+  
+  <!-- 查询老师信息 -->
+  <select id="getTeaInfo" parameterType="int" resultType="map">
+	SELECT u.sex  as sex,
+	u.user_id id,u.real_name realName,
+	u.photo
+	FROM t_user u 
+	WHERE u.type='1' AND u.sso_userid=#{_parameter}
+  </select>
+  
+  
+   <select id="getClassByTeacherid" parameterType="int" resultType="map">
+	  select lq_class_id
+	from t_lqclass tl
+  	where (tl.chr_teacher_id=#{userid} or tl.cep_teacher_id=#{userid} or tl.com_teacher_id=#{userid}) 
+  </select>
+  
+  <!-- 查询新添加的用户列表 -->
+<select id="getNewAddStuList" parameterType="map" resultType="map">
+select  tu.user_id id , tu.real_name realName, tu.sex, tu.photo, 
+ tu.birth , tu.id_card idCard,ts.stu_no stuno,
+ uni.univ_name university, ts.lq_class_id classId, ts.begin_studytime addTime, 
+ ts.status stuStatus, tu.tel tel , tu.email email,uni.univ_code,
+ ts.major, ts.grade
+ from t_student ts 
+left JOIN t_user tu on (tu.user_id = ts.user_id)
+left JOIN lq_universities uni on ( ts.univ_code= uni.univ_code)
+where  ts.user_id>#{lastId}
+limit 100
+</select>
+
+  
+  <!-- 查询新添加的用户总条数 -->
+  <select id="getNewAddStuCount" parameterType="map" resultType="int">
+  select count(*) from t_student ts where ts.user_id &gt; #{lastId}
+  </select>
+  
+<!-- 查询新添加的老师列表 -->
+<select id="getNewAddTeaList" parameterType="int" resultType="map">
+select  tu.user_id id , tu.real_name realName, tu.photo
+from t_teacher tt 
+LEFT JOIN t_user tu on(tt.user_id = tu.user_id)
+where tt.user_id &gt; #{lastId}
+limit 100
+
+</select>
+	
+	
+<!-- 	新增加的班级信息。  -->
+<select id="getNewAddClassInfo" parameterType="map" resultType="map">
+	select lq_class_id id ,class_name `name` , create_time addTime 
+	from t_lqclass 
+	where  lq_class_id &gt; #{lastId}
+	limit 100
+</select>
+
+	
+<!-- 	 获取老师班级接口。  -->
+<select id="getTeacherClass" parameterType="Integer" resultType="map">
+	  SELECT  lq_class_id  as  classId  from   t_lqclass  where com_teacher_id=#{techerid} or cep_teacher_id=#{techerid}  
+
+</select>
+  <!-- 获取班级数据。  -->
+<select id="getClassByid" parameterType="Integer" resultType="map">
+	select lq_class_id id ,class_name `name` , create_time addTime 
+	from t_lqclass 
+	where  lq_class_id =#{classid}
+	
+</select>
+</mapper>

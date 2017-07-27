@@ -1,0 +1,21 @@
+
+<p>
+  111111111111111111111
+  <input type="button" onclick="gopage2()" value="内部页面跳转">
+</p>
+<script>
+function gopage2()
+{
+
+	$.ajax({
+		type:"post",
+		url:"11.html",
+		canback:true,
+		data:{},
+		dataType:"html",
+		success:function(data){
+			$("#contentdiv").html(data);
+		}
+	});	
+}
+</script>

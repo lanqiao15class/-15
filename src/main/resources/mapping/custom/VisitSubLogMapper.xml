@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TVisitSubLogMapper">
+  
+   <select id="getVisitSubLogList" parameterType="java.lang.Integer" resultType="java.util.Map">
+    select 
+    	tv.visit_time,tv.visit_goal,tv.visit_content,tu.real_name,tv.createtime, sd.depname
+	from t_visit_sub_log tl
+	LEFT JOIN t_visit_log tv ON tl.visit_id=tv.visit_id
+	LEFT JOIN t_user tu ON tu.user_id=tv.creator_userid
+	LEFT JOIN t_teacher tt ON tt.user_id=tv.creator_userid
+	LEFT JOIN sys_deparment sd ON sd.depid=tt.dep_id
+	where tl.data_id=#{studentId}
+	ORDER BY  tv.createtime DESC
+  </select>
+  
+</mapper>

@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.UserMapper">
+  
+  <!-- 登录 -->
+  <select id="login" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user
+  	where login_tel=#{loginname} 
+  	or login_email=#{loginname} 
+  	or login_lq=#{loginname}
+  </select>
+  
+  
+    <!-- 登录查询用户表 -->
+  <select id="getUserForLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" />  FROM t_user WHERE  login_tel = #{userName,jdbcType=VARCHAR} 
+  	OR login_email = #{userName,jdbcType=VARCHAR} OR login_lq = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+  <!--  查询某一用户拥有的功能 -->
+  <select id="getUserFunctions" parameterType="int" resultMap="com.lanqiao.dao.SysFunctionMapper.BaseResultMap">
+  	select  distinct c.* from sys_user_role a 
+	INNER JOIN sys_role_function b on a.role_id = b.roleid
+	INNER JOIN sys_function c on c.functionid = b.functionid
+	where a.user_id = #{userid}
+  </select>
+  
+  
+  <select id="getAllFunctions" parameterType="int" resultMap="com.lanqiao.dao.SysFunctionMapper.BaseResultMap">
+  	select  * from sys_function
+  </select>
+  
+<!-- 获取用户拥有的角色 -->
+ <select id="getUserRoles" parameterType="int" resultMap="com.lanqiao.dao.SysRoleMapper.BaseResultMap">
+	select  distinct b.* from sys_user_role a 
+	INNER JOIN  sys_role b on a.role_id = b.id
+	where a.user_id = #{userid}
+ </select>
+
+<!--  获取所有菜单配置 -->
+ <select id="getAllMenu"  resultMap="com.lanqiao.dao.SysMenuMapper.BaseResultMap">
+	select * from sys_menu  
+ </select>
+
+  <select id="getUserIds"  parameterType="int" resultMap="com.lanqiao.dao.TUserDataAuthMapper.BaseResultMap">
+	select * from t_user_data_auth  where user_id=#{userid}
+ </select>
+ 
+ <!-- 获取所有的部门id -->
+   <select id="getAllDepartments"   resultMap="com.lanqiao.dao.SysDeparmentMapper.BaseResultMap">
+	  select 
+    <include refid="com.lanqiao.dao.SysDeparmentMapper.Base_Column_List" />
+    from sys_deparment
+    where isvalid=1
+ </select>
+
+ 
+<!-- 查询部门里的所有的员工. -->
+<select id="findUserInDeparments" resultMap="com.lanqiao.dao.TeacherMapper.BaseResultMap">
+  select * from t_teacher  where 
+  	<trim prefix="("  suffix=")" suffixOverrides="or">
+  	<foreach item="item" collection="list" separator="or" open="" close=""> 
+		dep_id=#{item.depid}
+	</foreach>
+	</trim>
+</select>
+
+<!-- 查询多个用户的数据权限. -->
+<select id="findManyDataIDs" resultMap="com.lanqiao.dao.TUserDataAuthMapper.BaseResultMap">
+  select * from t_user_data_auth  where
+  	<trim prefix="("  suffix=")" suffixOverrides="or">
+  	<foreach item="item" collection="list" separator="or" open="" close=""> 
+		user_id=#{item.userId}
+	</foreach>
+	</trim>
+</select>
+
+ <!-- 手机注册-验证手机号是否存在-zzh -->
+  <select id="loginTelCheck" parameterType="java.lang.String" resultType="java.util.Map">
+  	SELECT   
+  	user_id,login_tel,login_email,login_lq,password,salt,real_name,sex,qq,email,tel,birth,nation,prov_code,city_code,
+    id_card,create_time,update_time,remark,native_place,type,nickname,photo 
+  	FROM t_user 
+  	WHERE type IS NOT NULL AND login_tel = #{login_tel} 
+  </select>
+
+   <!-- 手机注册 (返回主键) zzh -->
+   <insert id="insertSelectiveReturnKey" parameterType="com.lanqiao.model.User">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId"> 
+		SELECT LAST_INSERT_ID() 
+	</selectKey> 
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+       <if test="ssoUserid != null">
+        sso_userid,
+      </if>
+      <if test="loginTel != null">
+        login_tel,
+      </if>
+      <if test="loginEmail != null">
+        login_email,
+      </if>
+      <if test="loginLq != null">
+        login_lq,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="provCode != null">
+        prov_code,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="nativePlace != null">
+        native_place,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="isvalid != null">
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+       <if test="ssoUserid != null">
+        #{ssoUserid,jdbcType=INTEGER},
+      </if>
+      <if test="loginTel != null">
+        #{loginTel,jdbcType=VARCHAR},
+      </if>
+      <if test="loginEmail != null">
+        #{loginEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="loginLq != null">
+        #{loginLq,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=DATE},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null">
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="nativePlace != null">
+        #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalid != null">
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 手机注册-验证邮箱是否存在-zzh -->
+  <select id="loginEmailCheck" parameterType="java.lang.String" resultType="java.util.Map">
+  	SELECT 
+  	user_id,login_tel,login_email,login_lq,password,salt,real_name,sex,qq,email,tel,birth,nation,prov_code,city_code,
+    id_card,create_time,update_time,remark,native_place,type,nickname,photo 
+  	FROM t_user 
+  	WHERE type IS NOT NULL AND login_email = #{loginEmail,jdbcType=VARCHAR} 
+  </select>
+  
+  <!-- 指定loginEmail 和 loginTel 的条数 zdh -->
+  <select id="existedCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	SELECT 
+  		count(1) 
+  	FROM 
+  		t_user 
+  	WHERE 
+  		<!-- 用户修改绑定进行账号检测 -->
+  		<if test="type == 1">
+  			login_tel=#{newAccount}
+  		</if>
+  		<if test="type == 2">
+  			login_email = #{newAccount}
+  		</if>
+  		<!-- 老师添加意向学员进行账号检测 -->
+  		<if test="type == 3">
+  			login_tel=#{newAccount} or login_email = #{newAccount}
+  		</if>
+  </select>
+  
+  <!-- 根据用户id查询用户信息  -->
+  <select id="getUserInfoByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" />  
+  	from t_user
+	where user_id=#{userId}
+  </select>
+  
+  
+  <!-- 添加意向学员，返回主键 zzx -->
+  <insert id="zzxInsertSelective" parameterType="com.lanqiao.model.User">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId"> 
+		SELECT LAST_INSERT_ID() 
+	</selectKey> 
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="loginTel != null">
+        login_tel,
+      </if>
+      <if test="loginEmail != null">
+        login_email,
+      </if>
+      <if test="loginLq != null">
+        login_lq,
+      </if>
+     
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="provCode != null">
+        prov_code,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="nativePlace != null">
+        native_place,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="isvalid != null">
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginTel != null">
+        #{loginTel,jdbcType=VARCHAR},
+      </if>
+      <if test="loginEmail != null">
+        #{loginEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="loginLq != null">
+        #{loginLq,jdbcType=VARCHAR},
+      </if>
+    
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=DATE},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null">
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="nativePlace != null">
+        #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalid != null">
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 根据id获取用户真实姓名 :电话 -->
+  <select id="getInfoById" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	SELECT CONCAT(real_name,':',tel) userInfo FROM t_user WHERE user_id=#{_parameter}
+  </select>
+  
+  <!-- 登录查询用户表 -->
+  <select id="getUserListByUserName" parameterType="java.lang.String" resultType="java.util.Map">
+  	SELECT <include refid="Base_Column_List" />  FROM t_user WHERE type IS NOT NULL AND login_tel = #{userName,jdbcType=VARCHAR} 
+  	OR login_email = #{userName,jdbcType=VARCHAR} OR login_lq = #{userName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getRealNameById" parameterType="Integer" resultType="String">
+  select real_name as realName from t_user where user_id=#{userId,jdbcType=INTEGER}
+  </select>
+   <!-- 添加用户 -->
+   <insert id="insertUserAccount" parameterType="com.lanqiao.model.User">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userId"> 
+		SELECT LAST_INSERT_ID() 
+	</selectKey> 
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ssoUserid != null">
+        sso_userid,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="loginTel != null">
+        login_tel,
+      </if>
+      <if test="loginEmail != null">
+        login_email,
+      </if>
+      <if test="loginLq != null">
+        login_lq,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="qq != null">
+        qq,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="nation != null">
+        nation,
+      </if>
+      <if test="provCode != null">
+        prov_code,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="nativePlace != null">
+        native_place,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="isvalid != null">
+        isvalid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+       <if test="ssoUserid != null">
+       #{ssoUserid,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginTel != null">
+        #{loginTel,jdbcType=VARCHAR},
+      </if>
+      <if test="loginEmail != null">
+        #{loginEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="loginLq != null">
+        #{loginLq,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="qq != null">
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=DATE},
+      </if>
+      <if test="nation != null">
+        #{nation,jdbcType=VARCHAR},
+      </if>
+      <if test="provCode != null">
+        #{provCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="nativePlace != null">
+        #{nativePlace,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="isvalid != null">
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 登录 -->
+  <select id="loginAccount" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user
+  	where login_tel=#{loginTel} 
+  	or login_email=#{loginEmail} 
+  </select>
+ <!-- 登录 -->
+  <select id="loginSSO" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user
+  	where sso_userid=#{ssoUserId} 
+  </select>
+<!-- 登录 -->
+  <select id="getallUser" resultMap="BaseResultMap" parameterType="string">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user
+  </select>
+  
+  <!-- 登录 -->
+  <select id="getidCard" resultType="int" parameterType="map">
+select COUNT(t_user.user_id) 	from t_user, t_student where  t_user.id_card=#{idCard} and  t_user.user_id!=#{userId}  and t_user.user_id=t_student.user_id   and  t_student.audit_status=#{auditStatus}  </select>
+</mapper>

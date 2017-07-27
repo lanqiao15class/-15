@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonMapper_Ext">
+
+
+<!-- 实现autoCompletor ,提供班级 -->
+  <select id="select_distinct_class_name" resultType="map">
+    select  class_name  as label , lq_class_id as id from t_lqclass  order by create_time desc
+  </select>
+  
+<!--    查询所有部门. -->
+  <select id="select_distinct_department" resultType="map">
+    select depid did, depname from sys_deparment 
+  </select>
+  
+  
+
+<!-- 实现autoCompletor ,提供老师 -->
+  <select id="select_distinct_teacher_name" resultType="map">
+     select  a.real_name  as label , a.user_id as id , b.dep_id as did
+	from
+   t_user  a , t_teacher b where real_name !='' 
+    and a.real_name is not null
+    and a.type=1
+    and a.user_id = b.user_id 
+
+  </select>
+  
+  
+<!-- 实现autoCompletor ,提供学生名字 -->
+  <select id="select_distinct_student_name" resultType="map">
+    select  a.real_name  as label , a.user_id as id , b.univ_code , b.stu_no  from t_user a , t_student b 
+    where a.real_name !='' 
+    and a.real_name is not null
+    and  a.create_time &gt; DATE_ADD(NOW(),INTERVAL -1 YEAR )
+    and a.type=0 and a.user_id = b.user_id
+    
+  </select>
+  
+<!-- 实现autoCompletor , 提供院校名字  -->
+  <select id="select_school_for_auto" resultType="map">
+    select  univ_code as id , univ_name as label from lq_universities 
+    where isvalid=1
+  </select>
+  
+<!-- 实现autoCompletor , 提供专业  -->
+  <select id="select_major_for_auto" resultType="map">
+    select  distinct major as label from t_student where  major is not null and major !=''
+  </select>
+
+
+	<!-- 实现autoCompletor , 提供子学院  -->
+  <select id="select_school_subname_for_auto" resultType="map">
+    select  distinct school_subname as label from t_student where  school_subname is not null and school_subname !=''
+  </select>
+	<!-- 实现autoCompletor , 提供民族数据  -->
+  <select id="select_nation_for_auto" resultType="map">
+    select   label, label as id from   sys_dict where type='nation' order by   label
+  </select>
+</mapper>

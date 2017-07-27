@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>蓝桥软件学院</title>
+<link rel="stylesheet" type="text/css" href="../../static/js/select_bag/jquery.searchableSelect.css">
+<link rel="stylesheet" type="text/css" href="../../static/js/search_input_bag/main.css">
+<link rel="stylesheet" type="text/css" href="../../static/font/iconfont.css">
+<link rel="stylesheet" type="text/css" href="../../static/css/basic.css">
+<link rel="stylesheet" type="text/css" href="../../static/css/style201706.css">
+</head>
+<body class="p-class">
+	<!--头部开始-->
+	<div class="header">
+		<div class="inner-hearder">
+	    	<a class="logo" href="javascript:void(0)"><img src="../../static/images/logo.png" alt=""></a>
+	        <div class="userInfo fr">
+	            <a class="header-img" href="javascript:void(0)"><img src="../../static/images/img_head.jpg" alt=""></a>
+	            <label class="pointer">
+	                <a href="javascript:void(0);" id="goUserCenter">王雷艳</a>
+	            </label>
+	            <a href="javascript:void(0);" class="optHover"><i class="icon-tro Hui-iconfont">&#xe6d5;</i></a>
+	            <div class="optionuserinfo" style="display: none;">
+	                <a href="javascript:void(0);" id="showUserInfo">个人中心</a>
+	                <a href="javascript:void(0);" id="updatePwd">账户管理</a>
+	                <a href="javascript:void(0);">退出</a>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!--左侧菜单部分开始-->
+	<div class="nav-left">
+        <div class="nav-left-inner">
+            <!--左侧头像部分开始-->
+			<div class="user-inf">
+                <div class="clearfix show">
+                    <div class="head-img"><img src="../../static/images/img_head.jpg"></div>
+                    <div class="nick-role">
+                        <label>王雷艳</label>
+                        <span>职业经纪人</span>
+                        <a class="set-btn" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+                    </div>
+                </div>
+                <a class="set-btn-icon hide" href="javascript:void(0)"><i class="Hui-iconfont">&#xe61d;</i></a>
+            </div>
+            <!--左侧头像部分结束-->
+			<!--左侧菜单下拉部分开始-->
+			<div class="nav-menu">
+                <dl>
+                    <dt>
+                        <a class="nav-line-row current" href="javascript:void(0);">
+                            <i class="icon i-school"></i><span class="nav-content">院校管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='001' data-href='stu_inquiry.html' href="javascript:void(0);">学员查询</a>
+                        <a id='002' data-href='stu_audit.html' href="javascript:void(0);">新生审核</a>
+                        <a id='003' data-href='stu_info_modify.html' href="javascript:void(0);">学员基本信息修改</a>
+                        <a id='004' data-href='stu_placement.html' href="javascript:void(0);"  class="last">学员分班</a>
+                    </dd>
+                </dl>
+                <dl class="current">
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-file"></i><span class="nav-content">意向学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub" style="display:inherit;">
+                        <a id='005' data-href='stu_inquiry.html' href="javascript:void(0);">班级查询统计</a>
+                        <a class="last current" id='006' data-href='stu_audit.html' href="javascript:void(0);">班级信息修改</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-info"></i><span class="nav-content">学员报名审核</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='007' data-href='stu_placement.html' href="javascript:void(0);">就业信息查询</a>
+                        <a class="last" id='008' data-href='stu_inquiry.html' href="javascript:void(0);">就业信息录入</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-house"></i><span class="nav-content">学员管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='009' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a class="last" id='010' data-href='stu_audit.html' href="javascript:void(0);">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-rent"></i><span class="nav-content">班级管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='011' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='012' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-account"></i><span class="nav-content">就业服务</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='013' data-href='stu_inquiry.html' href="javascript:void(0);">学员入职登记</a>
+                        <a id='014' data-href='stu_audit.html' href="javascript:void(0);" class="last">学员职业信息</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-book"></i><span class="nav-content">收费管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='015' data-href='stu_inquiry.html' href="javascript:void(0);">投诉查询</a>
+                        <a id='016' data-href='stu_audit.html' href="javascript:void(0);" class="last">投诉处理</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <a class="nav-line-row" href="javascript:void(0);">
+                            <i class="icon i-store"></i><span class="nav-content">账户管理</span><i class="icon-tro Hui-iconfont">&#xe6d7;</i>
+                        </a>
+                    </dt>
+                    <dd class="nav-sub">
+                        <a id='017' data-href='stu_inquiry.html' href="javascript:void(0);">个人信息</a>
+                        <a id='018' data-href='stu_audit.html' href="javascript:void(0);">账号安全</a>
+                        <a id='019' data-href='stu_audit.html' href="javascript:void(0);" class="last">账号绑定</a>
+                    </dd>
+                </dl>
+            </div>
+			<!--左侧菜单下拉部分结束-->
+        </div>
+    </div>
+	<!--左侧菜单部分结束-->
+    <div class="main-right">
+    	<div class="inner-box">
+        	<div class="content">
+            	<div class="content-inner-part">
+                	<div class="inner-reletive">
+                    	<!--右侧标题部分开始-->
+						<div class="tit-h1-box">
+                            <h1 class="tit-first">
+                                <span>教学管理</span><i class="gt-icon">&gt;</i><span class="curr">班级详情</span>
+                            </h1>
+                        </div>
+						<!--右侧标题部分结束-->
+                        <!--右侧内容部分背景白色开始-->
+                        <div class="inner-white">
+                        	<div class="y-block">
+                        		<div class="y-detail">
+                        			<div class="info-main clearfix">
+                        				<div class="item w180">
+		                            		<span>班级名称：</span>塔里木1702班
+		                            	</div>
+		                            	<div class="item w140">
+		                            		<span>班级状态：</span>授课中
+		                            	</div>
+		                            	<div class="item w180">
+		                            		<span>开班时间：</span>2017-02-12
+		                            	</div>
+		                            	<div class="item w140">
+		                            		<span>开班人数：</span>200
+		                            	</div>
+		                            	<div class="item w140">
+		                            		<span>当前人数：</span>200
+		                            	</div>
+		                            	<div class="item w140">
+		                            		<span>技术老师：</span>宋占涛
+		                            	</div>
+		                            	<div class="item w180">
+		                            		<span>CEP：</span>张三丰
+		                            	</div>
+		                            	<div class="item w140">
+		                            		<span>职业经纪人：</span>张三丰
+		                            	</div>
+		                            	
+		                            	<div class="item w290">
+		                            		<span>课程名称：</span>蓝桥java课程系统V0.9
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>已排/已上课时：</span>100/768
+		                            	</div>
+                        			</div>
+	                            	<div class="info-other clearfix">
+	                            		<div class="item">
+		                            		<span>拟校园结课日期：</span>暂无
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>QQ群： </span>1231541533511
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>创建目的：</span>新开班级
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>校园结课日期：</span>暂无
+		                            	</div>
+		                            	<!--<div class="item input act">act切换input显影-->
+		                            	<div class="item input">
+		                            		<span>班长：</span>
+		                            		<label>点击编写</label>
+		                            		<div>
+		                            			<input type="" name="" id="" value="" />
+		                            			<button>提交</button>
+		                            		</div>
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>创建时间：</span>2017-02-12&emsp;17:19:19
+		                            	</div>
+		                            	<div class="item w60">
+		                            		<span>拟结业日期：</span>2017-02-12
+		                            	</div>
+		                            	<div class="item ">
+		                            		<span>创建人：</span>赵同合
+		                            	</div>
+		                            	<div class="item w60">
+		                            		<span>结业日期：</span>2017-02-12
+		                            	</div>
+		                            	<div class="item">
+		                            		<span>关闭时间：</span>暂无
+		                            	</div>
+	                            	</div>
+	                            	<div class="drop"></div>
+	                            </div>
+	                            <div class="y-tabs clearfix">
+	                            	<a href="" class="act">班级学员</a>
+	                            	<a href="">课程列表</a>
+	                            	<a href="">签到记录</a>
+	                            	<a href="">每日一讲</a>
+	                            	<a href="">学生周报</a>
+	                            	<a href="">班级跟踪记录</a>
+	                            	<a href="">班级状态流水</a>
+	                            </div>
+                        	</div>
+                        	
+                                
+                        	<!--filter-->
+                            <div class="search-part-tall">
+                                <div class="table-scroll-parent" id="myGrid">
+                                	班级学员表格
+                                </div>
+                            </div><!--filter:end-->
+                            
+                        </div>
+                        <!--右侧内容部分背景白色结束-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div style="height:0; overflow:hidden;" id="dialogcontant"></div>
+<script src="../../static/js/jquery-1.9.1.min.js"></script>
+<script src="../../static/js/placeholder.js"></script>
+<script src="../../static/js/effect.js"></script>
+<script src="../../static/js/select_bag/jquery.searchableSelect.js"></script>
+<!--搜索框下拉自动填充js开始-->
+<script src="../../static/js/search_input_bag/jquery.autocompleter.js"></script>
+<script src="../../static/js/search_input_bag/main.js"></script>
+<!--搜索框下拉自动填充js结束-->
+<script src="../../static/js/layer/layer.js"></script>
+<script> 
+$(function(){
+	$(".drop,.item.input label").click(function(){
+		$(this).parent().toggleClass("act");
+	});
+}); 
+</script>
+</body>
+</html>

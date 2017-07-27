@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TDataTagMapper">
+  
+  <!--  获取指定学员的标记  -->
+  <select id="getTagByUserIdAndData" parameterType="com.lanqiao.model.TDataTag" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+	from t_data_tag
+	where userid=#{userid}  and datatype=#{datatype} and data_id=#{dataId}
+  </select>
+  
+  <delete id="cancelFocus" parameterType="com.lanqiao.model.TDataTag">
+    DELETE 
+       from  t_data_tag
+    where 
+       data_id=#{dataId,jdbcType=INTEGER} 
+    and 
+       userid=#{userid,jdbcType=INTEGER} 
+    and 
+       datatype=#{datatype,jdbcType=INTEGER}
+    and 
+       tagtype=#{tagtype,jdbcType=INTEGER}
+  </delete>
+  <select id="teaIfRemarkStu" parameterType="com.lanqiao.model.TDataTag" resultType="Integer">
+  select 
+  		count(1) 
+  from 
+  		t_data_tag 
+  where 
+  		userid=#{userid,jdbcType=INTEGER} 
+  and 
+  		data_id=#{dataId,jdbcType=INTEGER}
+  and
+        datatype=#{datatype,jdbcType=INTEGER}
+  and
+        tagtype=#{tagtype,jdbcType=INTEGER}
+  </select>
+</mapper>

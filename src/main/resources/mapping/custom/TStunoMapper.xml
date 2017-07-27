@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.dao.TStunoMapper">
+	
+	<!-- 当前年份是否存在记录 -->
+  	<select id="selectByYears" parameterType="java.lang.String" resultType="Integer"> 
+	  	select count(*)
+		from t_stuno
+		where years=#{_parameter}
+   </select>
+   
+   <!-- 获取对应的课程某个年份的记录 -->
+   <select id="selectByCouseTypeAndYear" parameterType="java.util.Map" resultMap="BaseResultMap"> 
+	  	select *
+		from t_stuno
+		where years=#{year} and course_type=#{courseType}
+		for update
+   </select>
+   
+   <!-- 更新数据 -->
+    <select id="updateByCouseTypeAndYear" parameterType="java.util.Map"> 
+	  update t_stuno
+      set course_total = #{courseTotal}
+      where course_type = #{courseType} and years = #{year}
+   </select>
+   
+</mapper>
